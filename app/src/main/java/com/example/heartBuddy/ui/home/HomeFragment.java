@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
     public void refresh() {
         this.peekList.removeAllViews();
         Series series = GlobalState.series.get().orElse(new Series(new ArrayList<>()));
-        LinearLayout.LayoutParams formParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200);
+        LinearLayout.LayoutParams formParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150);
         series.extract(dp -> new DataRow(
                         this,
                         R.layout.row_peek,

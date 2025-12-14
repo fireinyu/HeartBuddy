@@ -1,8 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.HeartBuddy" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.HeartBuddy" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -12,9 +11,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- colors-->
+        <item name="colorPrimary">@color/purple_500</item>
         <item name="backgroundColor">@color/white</item>
-        <item name="hintColor">@color/faint_grey</item>
         <item name="defaultFontColor">@color/black</item>
+        <item name="hintColor">@color/faint_grey</item>
+        <item name="toggleOnColor">@color/purple_500</item>
+        <item name="toggleOffColor">@color/light_grey</item>
         <item name="hrColor">@color/magenta</item>
         <item name="diasColor">@color/purple_500</item>
         <item name="sysColor">@color/lime</item>

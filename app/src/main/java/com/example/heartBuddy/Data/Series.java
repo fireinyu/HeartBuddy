@@ -31,7 +31,19 @@ public class Series implements Serializable {
     }
 
     public void set(int index, Datapoint entry) {
-        this.data.set(index, entry);
+        if (
+                (index == 0 || this.data.get(index-1).getDateTime().compareTo(entry.getDateTime()) <= 0) &&
+                (index+1 == this.data.size() || this.data.get(index+1).getDateTime().compareTo(entry.getDateTime()) >= 0)
+        ) {
+            this.data.set(index, entry);
+        } else {
+            int insertIndex = Math.abs(Collections.binarySearch(this.data, entry, (dp1, dp2) -> dp1.getDateTime().compareTo(dp2.getDateTime())) + 1);
+            if (insertIndex > index) {
+                insertIndex--;
+            }
+            this.data.remove(index);
+            this.data.add(insertIndex, entry);
+        }
     }
     public void remove(int index) {
         this.data.remove(index);
