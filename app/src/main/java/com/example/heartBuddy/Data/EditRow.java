@@ -2,11 +2,15 @@ package com.example.heartBuddy.Data;
 
 import android.app.Activity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,6 +22,9 @@ import android.widget.ToggleButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.heartBuddy.Util;
+import com.google.gson.internal.Streams;
+
+import org.apache.commons.compress.utils.Iterators;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,6 +32,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -33,6 +42,8 @@ public abstract class EditRow extends DataRow{
     private DatePicker datePicker;
     private TimePicker timePicker;
     private Fragment context;
+    private ViewGroup row;
+    private InputMethodManager imm;
 
 
     public EditRow(
@@ -54,13 +65,13 @@ public abstract class EditRow extends DataRow{
 
     @Override
     public ViewGroup make() {
-        ViewGroup row = super.make();
+        row = super.make();
+        imm = (InputMethodManager) this.context.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         ToggleButton dateBtn = row.findViewWithTag("date");
         ToggleButton timeBtn = row.findViewWithTag("time");
         dateBtn.setTextOff(dateBtn.getText());
         dateBtn.setOnCheckedChangeListener((btn, checked) -> {
             Optional.ofNullable(this.context.getActivity().getCurrentFocus()).ifPresent(view -> view.clearFocus());
-            InputMethodManager imm = (InputMethodManager) this.context.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(btn.getWindowToken(), 0);
             if (checked) {
                 Util.set_enabled(row, false);
@@ -68,17 +79,18 @@ public abstract class EditRow extends DataRow{
                 this.datePicker.setVisibility(View.VISIBLE);
                 timeBtn.setChecked(false);
             } else {
-                Util.set_enabled(row, true);
-                this.refreshSubmitButton(row);
                 this.datePicker.setVisibility(View.GONE);
                 this.date = LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth());
-                ((ToggleButton)btn).setTextOff(String.format("%02d/%02d/%04d", date.getDayOfMonth(), date.getMonth().getValue(), date.getYear()));
+                ((ToggleButton)btn).setTextOff(String.format("%02d/%02d", date.getDayOfMonth(), date.getMonth().getValue()));
+                Util.set_enabled(row, true);
+                this.refreshSubmitButton(row);
+                ToggleButton nextView = row.findViewWithTag("time");
+                nextView.setChecked(true);
             }
         });
         timeBtn.setTextOff(timeBtn.getText());
         timeBtn.setOnCheckedChangeListener((btn, checked) -> {
             Optional.ofNullable(this.context.getActivity().getCurrentFocus()).ifPresent(view -> view.clearFocus());
-            InputMethodManager imm = (InputMethodManager) this.context.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(btn.getWindowToken(), 0);
             if (checked) {
                 Util.set_enabled(row, false);
@@ -86,38 +98,64 @@ public abstract class EditRow extends DataRow{
                 this.timePicker.setVisibility(View.VISIBLE);
                 dateBtn.setChecked(false);
             } else {
-                Util.set_enabled(row, true);
-                this.refreshSubmitButton(row);
                 this.timePicker.setVisibility(View.GONE);
                 this.time = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
                 ((ToggleButton)btn).setTextOff(String.format("%02d:%02d", time.getHour(), time.getMinute()));
+                Util.set_enabled(row, true);
+                this.refreshSubmitButton(row);
+                View nextView = row.findViewWithTag("systolic");
+                nextView.requestFocus();
+                imm.showSoftInput(nextView, 0);
             }
         });
-        TextWatcher listener = new TextWatcher() {
+        Iterator<TextView.OnEditorActionListener> doneListeners = Stream.<TextView.OnEditorActionListener>of(
+                (v, i, e) -> {
+                    Log.d("debugR", String.valueOf(e));
+                    View nextView = row.findViewWithTag("diastolic");
+                    nextView.requestFocus();
+                    imm.showSoftInput(nextView, 0);
+                    return true;
+                },
+                (v, i, e) -> {
+                    View nextView = row.findViewWithTag("heartRate");
+                    nextView.requestFocus();
+                    imm.showSoftInput(nextView, 0);
+                    return true;
+                },
+                (v, i, e) -> {
+                    View nextView = row.findViewWithTag("submit");
+                    imm.hideSoftInputFromWindow(nextView.getWindowToken(), 0);
+                    if (nextView.isEnabled()) {
+                        nextView.performClick();
+                    }
+                    return true;
+                }
+        ).iterator();
+        TextWatcher textListener = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                return;
+                EditRow.this.refreshSubmitButton(row);
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                return;
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-               EditRow.this.refreshSubmitButton(row);
-            }
 
+            }
         };
         Stream.<TextView>of(
-                        row.findViewWithTag("heartRate"),
+                        row.findViewWithTag("systolic"),
                         row.findViewWithTag("diastolic"),
-                        row.findViewWithTag("systolic")
+                        row.findViewWithTag("heartRate")
                 )
                 .filter(view -> view instanceof EditText)
                 .map(view -> (EditText)view)
-                .forEach(view -> view.addTextChangedListener(listener));
+                .peek(view -> view.setOnEditorActionListener(doneListeners.next()))
+                .forEach(view -> view.addTextChangedListener(textListener));
 
         return row;
     }
@@ -139,8 +177,10 @@ public abstract class EditRow extends DataRow{
         ).allMatch(view -> view.getText().length()>0);
         row.<Button>findViewWithTag("submit").setEnabled(enabled);
     }
+
     public static class NewRow extends EditRow{
         private LocalObject<Series> series;
+
         public NewRow(
                 Fragment context,
                 int templateId,
@@ -149,6 +189,7 @@ public abstract class EditRow extends DataRow{
         ){
             super(context, templateId, ZonedDateTime.now(), -1, -1, -1, datePicker, timePicker);
             this.series = series;
+
         }
 
         @Override
@@ -201,6 +242,10 @@ public abstract class EditRow extends DataRow{
             row.<ToggleButton>findViewWithTag("submit").setOnCheckedChangeListener((btn, checked) -> {
                 if (checked) {
                     Util.set_enabled(row, true);
+                    View nextView = row.findViewWithTag("systolic");
+                    nextView.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) row.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(nextView, 0);
                 } else {
                     Util.set_enabled(row, false);
                     Series series = this.series.get().orElse(new Series(new ArrayList<>()));

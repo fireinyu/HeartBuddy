@@ -2,19 +2,22 @@ package com.example.heartBuddy.ui.home;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.heartBuddy.Data.DataRow;
 import com.example.heartBuddy.Data.EditRow;
@@ -24,14 +27,13 @@ import com.example.heartBuddy.Data.Series;
 import com.example.heartBuddy.Data.TwoLineChart;
 import com.example.heartBuddy.GlobalState;
 import com.example.heartBuddy.R;
+import com.example.heartBuddy.Util;
 import com.example.heartBuddy.databinding.FragmentHomeBinding;
 import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
-import ai.djl.nn.core.Linear;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -64,8 +66,11 @@ public class HomeFragment extends Fragment {
                 this.hrChart, this.bpChart,
                 getString(R.string.hr_chart_title), getString(R.string.bp_chart_title),
                 getString(R.string.diastolic_line_label), getString(R.string.systolic_line_label),
-                R.color.hr_line, R.color.diastolic_line, R.color.systolic_line
+                Util.get_color(R.attr.hrColor),
+                Util.get_color(R.attr.diasColor),
+                Util.get_color(R.attr.sysColor)
         );
+        Log.d("colors", ""+R.attr.hrColor+" "+R.attr.diasColor+" "+R.attr.sysColor);
         this.datePicker = this.root.findViewById(R.id.homeDatePicker);
         this.timePicker = this.root.findViewById(R.id.homeTimePicker);
         this.addRow = new EditRow.NewRow(
@@ -76,8 +81,28 @@ public class HomeFragment extends Fragment {
                 this.timePicker
         );
         View v = this.addRow.make();
-        v.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        this.addRowContainer.addView(v);
+        this.addRowContainer.addView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        // why the other branch layoutparams are used when any branch runs ??
+        ConstraintLayout constraintLayout = (ConstraintLayout) root;
+        ConstraintSet constraintSet = new ConstraintSet();
+        v.addOnLayoutChangeListener((vk, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            boolean isImeVisible = root.getRootWindowInsets() != null && root.getRootWindowInsets().isVisible(WindowInsets.Type.ime());
+            Log.d("debug_layout", "IME visible: " + isImeVisible);
+
+            constraintSet.clone(constraintLayout);
+
+            if (isImeVisible) {
+                // Anchor the top of addRowContainer to the top of the guideline/view meant for when the keyboard is open
+                // Assuming you have a view or guideline with this ID in your layout
+                constraintSet.connect(R.id.addRowContainer, ConstraintSet.TOP, R.id.peekListTop, ConstraintSet.TOP);
+            } else {
+                // Anchor the top of addRowContainer to the bottom of the peek list when keyboard is closed
+                constraintSet.connect(R.id.addRowContainer, ConstraintSet.TOP, R.id.peekListBottom, ConstraintSet.BOTTOM);
+            }
+
+            // Apply the modified constraints
+            constraintSet.applyTo(constraintLayout);
+        });
         Log.d("checknull", String.valueOf(GlobalState.series));
 
         Consumer<LocalObject<Series>> hook = obj -> this.refresh();

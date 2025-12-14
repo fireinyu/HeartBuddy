@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.heartBuddy"
-        minSdk = 28
+        minSdk = 30
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"

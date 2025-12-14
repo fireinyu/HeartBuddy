@@ -6,8 +6,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF6200EE</color>
     <color name="black">#FF000000</color>
+    <color name="faint_grey">#C36A6A6A</color>
     <color name="white">#FFFFFFFF</color>
-    <color name = "hr_line">#FF6200EE</color>
-    <color name = "diastolic_line">#FF6200EE</color>
-    <color name = "systolic_line">#FF6200EE</color>
+    <color name="lime">#83E925</color>
+    <color name="magenta">#ED145A</color>
 </resources>

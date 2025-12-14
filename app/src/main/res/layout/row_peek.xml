@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?backgroundColor">
 
     <TextView
         android:id="@+id/peek_hr"
@@ -17,11 +18,13 @@
         android:ems="10"
         android:enabled="false"
         android:lines="1"
+        android:selectAllOnFocus="true"
         android:tag="heartRate"
         android:text="@string/heart_rate_input_label"
+        android:textColor="?hrColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,11 +39,13 @@
         android:ems="10"
         android:enabled="false"
         android:lines="1"
-        android:tag="systolic"
+        android:selectAllOnFocus="true"
+        android:tag="diastolic"
         android:text="@string/diastolic_input_label"
+        android:textColor="?diasColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -55,17 +60,20 @@
         android:ems="10"
         android:enabled="false"
         android:lines="1"
-        android:tag="diastolic"
+        android:selectAllOnFocus="true"
+        android:tag="systolic"
         android:text="@string/systolic_input_label"
+        android:textColor="?sysColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/peek_date"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:textColor="?attr/defaultFontColor"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"
@@ -82,6 +90,7 @@
         android:id="@+id/peek_time"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:textColor="?attr/defaultFontColor"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"

@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataRow {
-    private ViewGroup template;
+    private int templateId;
+    private Fragment context;
     LocalDate date;
     LocalTime time;
     private double heartRate;
@@ -36,7 +37,8 @@ public class DataRow {
             double diastolic,
             double systolic
     ){
-        this.template = (ViewGroup) context.getLayoutInflater().inflate(templateId, null, false);
+        this.templateId = templateId;
+        this.context = context;
         this.date = dateTime.toLocalDate();
         this.time = dateTime.toLocalTime();
         this.heartRate = heartRate;
@@ -45,13 +47,14 @@ public class DataRow {
     }
 
     public ViewGroup make() {
-        ((TextView) this.template.findViewWithTag("date")).setText(String.format("%02d/%02d/%04d", date.getDayOfMonth(), date.getMonth().getValue(), date.getYear()));
-        ((TextView) this.template.findViewWithTag("time")).setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
-        ((TextView) this.template.findViewWithTag("heartRate")).setText(String.valueOf(Math.round(this.heartRate)));
-        ((TextView) this.template.findViewWithTag("diastolic")).setText(String.valueOf(Math.round(this.diastolic)));
-        ((TextView) this.template.findViewWithTag("systolic")).setText(String.valueOf(Math.round(this.systolic)));
+        ViewGroup template = (ViewGroup) context.getLayoutInflater().inflate(templateId, null, false);
+        ((TextView) template.findViewWithTag("date")).setText(String.format("%02d/%02d", date.getDayOfMonth(), date.getMonth().getValue()));
+        ((TextView) template.findViewWithTag("time")).setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
+        ((TextView) template.findViewWithTag("heartRate")).setText(String.valueOf(Math.round(this.heartRate)));
+        ((TextView) template.findViewWithTag("diastolic")).setText(String.valueOf(Math.round(this.diastolic)));
+        ((TextView) template.findViewWithTag("systolic")).setText(String.valueOf(Math.round(this.systolic)));
 
-        return this.template;
+        return template;
     }
 
 }

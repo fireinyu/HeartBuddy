@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?backgroundColor"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <EditText
         android:id="@+id/add_hr"
@@ -14,13 +17,16 @@
         android:autoSizeTextType="uniform"
         android:autoText="true"
         android:ems="10"
+        android:hint="@string/heart_rate_input_label"
+        android:textColorHint="?hintColor"
         android:inputType="number|numberDecimal"
         android:lines="1"
+        android:selectAllOnFocus="true"
         android:tag="heartRate"
-        android:text="@string/heart_rate_input_label"
+        android:textColor="?hrColor"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -32,13 +38,16 @@
         android:autoSizeTextType="uniform"
         android:autoText="true"
         android:ems="10"
+        android:hint="@string/diastolic_input_label"
+        android:textColorHint="?hintColor"
         android:inputType="number|numberDecimal"
         android:lines="1"
-        android:tag="systolic"
-        android:text="@string/diastolic_input_label"
+        android:selectAllOnFocus="true"
+        android:tag="diastolic"
+        android:textColor="?diasColor"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -50,13 +59,16 @@
         android:autoSizeTextType="uniform"
         android:autoText="true"
         android:ems="10"
+        android:hint="@string/systolic_input_label"
+        android:textColorHint="?hintColor"
         android:inputType="number|numberDecimal"
         android:lines="1"
-        android:tag="diastolic"
-        android:text="@string/systolic_input_label"
+        android:selectAllOnFocus="true"
+        android:tag="systolic"
+        android:textColor="?sysColor"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -88,6 +100,7 @@
         android:lines="1"
         android:tag="date"
         android:textOn="@string/picker_confirm_label"
+        android:textColor="?attr/defaultFontColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,6 +116,7 @@
         android:autoText="true"
         android:lines="1"
         android:tag="time"
+        android:textColor="?attr/defaultFontColor"
         android:textOn="@string/picker_confirm_label"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
