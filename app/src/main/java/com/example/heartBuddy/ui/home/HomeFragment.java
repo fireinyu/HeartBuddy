@@ -68,7 +68,8 @@ public class HomeFragment extends Fragment {
                 getString(R.string.diastolic_line_label), getString(R.string.systolic_line_label),
                 Util.get_color(R.attr.hrColor),
                 Util.get_color(R.attr.diasColor),
-                Util.get_color(R.attr.sysColor)
+                Util.get_color(R.attr.sysColor),
+                Util.get_color(R.attr.defaultFontColor)
         );
         Log.d("colors", ""+R.attr.hrColor+" "+R.attr.diasColor+" "+R.attr.sysColor);
         this.datePicker = this.root.findViewById(R.id.homeDatePicker);
@@ -80,6 +81,9 @@ public class HomeFragment extends Fragment {
                 this.datePicker,
                 this.timePicker
         );
+        Util.for_each(root, v -> v.setClickable(true));
+        Util.for_each(root, v -> v.setFocusableInTouchMode(true));
+        Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
         View v = this.addRow.make();
         this.addRowContainer.addView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         // why the other branch layoutparams are used when any branch runs ??

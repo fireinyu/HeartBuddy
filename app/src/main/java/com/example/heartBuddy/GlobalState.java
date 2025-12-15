@@ -16,8 +16,7 @@ import com.example.heartBuddy.Data.Series;
 public class GlobalState {
     /* TODO LIST
      * 1. Import and Export (.csv)
-     * 2. ui design for DataRow
-     * 3. translation to Chinese
+     * 2. icons
      * 4. Dark & light themes
      * 5. Deploy?
      */

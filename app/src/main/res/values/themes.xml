@@ -13,13 +13,19 @@
         <!-- colors-->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="backgroundColor">@color/white</item>
+        <item name="toggleOnColor">#7D3BF8</item>
+        <item name="toggleOffColor">#80B6B6B6</item>
+        <item name="rowColor">#76B6A066</item>
+        <item name="fieldColor">#8F749997</item>
+        <item name="highlightColor">#F4F1BD</item>
         <item name="defaultFontColor">@color/black</item>
-        <item name="hintColor">@color/faint_grey</item>
-        <item name="toggleOnColor">@color/purple_500</item>
-        <item name="toggleOffColor">@color/light_grey</item>
-        <item name="hrColor">@color/magenta</item>
-        <item name="diasColor">@color/purple_500</item>
-        <item name="sysColor">@color/lime</item>
+        <item name="defaultHintColor">@color/faint_grey</item>
+        <item name="hrColor">#2D9E31</item>
+        <item name="hrHintColor">#652D9E31</item>
+        <item name="diasColor">#344CD1</item>
+        <item name="diasHintColor">#65344CD1</item>
+        <item name="sysColor">@color/magenta</item>
+        <item name="sysHintColor">#63ED145A</item>
     </style>
 
     <style name="Theme.HeartBuddy.NoActionBar">

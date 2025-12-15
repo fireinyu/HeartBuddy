@@ -19,6 +19,7 @@
             android:id="@+id/modifyList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="1000dp"
             android:orientation="vertical" />
     </ScrollView>
 
@@ -26,8 +27,9 @@
         android:id="@+id/listDatePicker"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         android:background="?backgroundColor"
+        android:elevation="2dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline18"
@@ -37,8 +39,9 @@
         android:id="@+id/listTimePicker"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         android:background="?backgroundColor"
+        android:elevation="2dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline18"

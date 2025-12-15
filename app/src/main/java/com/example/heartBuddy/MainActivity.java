@@ -1,8 +1,15 @@
 package com.example.heartBuddy;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.heartBuddy.Data.EditRow;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -56,5 +63,7 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 
 }

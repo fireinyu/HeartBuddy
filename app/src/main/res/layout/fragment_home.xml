@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.46" />
+        app:layout_constraintGuide_percent="0.48" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/hrChart"
@@ -118,6 +118,7 @@
         android:layout_height="0dp"
         android:background="#FFFFFF"
         android:clickable="true"
+        android:elevation="2dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,6 +131,7 @@
         android:layout_height="0dp"
         android:background="#FFFFFF"
         android:clickable="true"
+        android:elevation="2dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"

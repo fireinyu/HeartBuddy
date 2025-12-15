@@ -43,8 +43,6 @@ public abstract class EditRow extends DataRow{
     private TimePicker timePicker;
     private Fragment context;
     private ViewGroup row;
-    private InputMethodManager imm;
-
 
     public EditRow(
             Fragment context,
@@ -66,18 +64,17 @@ public abstract class EditRow extends DataRow{
     @Override
     public ViewGroup make() {
         row = super.make();
-        imm = (InputMethodManager) this.context.getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
         ToggleButton dateBtn = row.findViewWithTag("date");
         ToggleButton timeBtn = row.findViewWithTag("time");
         dateBtn.setTextOff(dateBtn.getText());
         dateBtn.setOnCheckedChangeListener((btn, checked) -> {
-            Optional.ofNullable(this.context.getActivity().getCurrentFocus()).ifPresent(view -> view.clearFocus());
-            imm.hideSoftInputFromWindow(btn.getWindowToken(), 0);
+            this.row.requestFocus();
             if (checked) {
                 Util.set_enabled(row, false);
                 Util.set_enabled(btn, true);
-                this.datePicker.setVisibility(View.VISIBLE);
+                Util.set_enabled(timeBtn, true);
                 timeBtn.setChecked(false);
+                this.datePicker.setVisibility(View.VISIBLE);
             } else {
                 this.datePicker.setVisibility(View.GONE);
                 this.date = LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth());
@@ -90,22 +87,19 @@ public abstract class EditRow extends DataRow{
         });
         timeBtn.setTextOff(timeBtn.getText());
         timeBtn.setOnCheckedChangeListener((btn, checked) -> {
-            Optional.ofNullable(this.context.getActivity().getCurrentFocus()).ifPresent(view -> view.clearFocus());
-            imm.hideSoftInputFromWindow(btn.getWindowToken(), 0);
+            this.row.requestFocus();
             if (checked) {
                 Util.set_enabled(row, false);
                 Util.set_enabled(btn, true);
-                this.timePicker.setVisibility(View.VISIBLE);
+                Util.set_enabled(dateBtn, true);
                 dateBtn.setChecked(false);
+                this.timePicker.setVisibility(View.VISIBLE);
             } else {
                 this.timePicker.setVisibility(View.GONE);
                 this.time = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
                 ((ToggleButton)btn).setTextOff(String.format("%02d:%02d", time.getHour(), time.getMinute()));
                 Util.set_enabled(row, true);
                 this.refreshSubmitButton(row);
-                View nextView = row.findViewWithTag("systolic");
-                nextView.requestFocus();
-                imm.showSoftInput(nextView, 0);
             }
         });
         Iterator<TextView.OnEditorActionListener> doneListeners = Stream.<TextView.OnEditorActionListener>of(
@@ -113,18 +107,16 @@ public abstract class EditRow extends DataRow{
                     Log.d("debugR", String.valueOf(e));
                     View nextView = row.findViewWithTag("diastolic");
                     nextView.requestFocus();
-                    imm.showSoftInput(nextView, 0);
                     return true;
                 },
                 (v, i, e) -> {
                     View nextView = row.findViewWithTag("heartRate");
                     nextView.requestFocus();
-                    imm.showSoftInput(nextView, 0);
                     return true;
                 },
                 (v, i, e) -> {
                     View nextView = row.findViewWithTag("submit");
-                    imm.hideSoftInputFromWindow(nextView.getWindowToken(), 0);
+                    row.requestFocus();
                     if (nextView.isEnabled()) {
                         nextView.performClick();
                     }
@@ -244,8 +236,6 @@ public abstract class EditRow extends DataRow{
                     Util.set_enabled(row, true);
                     View nextView = row.findViewWithTag("systolic");
                     nextView.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) row.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(nextView, 0);
                 } else {
                     Util.set_enabled(row, false);
                     Series series = this.series.get().orElse(new Series(new ArrayList<>()));

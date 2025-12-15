@@ -19,6 +19,7 @@ import com.example.heartBuddy.Data.LocalObject;
 import com.example.heartBuddy.Data.Series;
 import com.example.heartBuddy.GlobalState;
 import com.example.heartBuddy.R;
+import com.example.heartBuddy.Util;
 import com.example.heartBuddy.databinding.FragmentListBinding;
 
 import java.util.ArrayList;
@@ -64,6 +65,9 @@ public class ListFragment extends Fragment {
         Series series = GlobalState.series.get().orElse(new Series(new ArrayList<>()));
         LinearLayout.LayoutParams formParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300);
         EditRow.ModifyRow.resetIndex();
+        Util.for_each(root, v -> v.setClickable(true));
+        Util.for_each(root, v -> v.setFocusableInTouchMode(true));
+        Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
         series.extract(dp -> new EditRow.ModifyRow(
                         this,
                         R.layout.row_modify,

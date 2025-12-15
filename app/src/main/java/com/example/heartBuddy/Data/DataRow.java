@@ -11,6 +11,8 @@ import android.widget.ViewSwitcher;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.heartBuddy.Util;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -53,7 +55,7 @@ public class DataRow {
         ((TextView) template.findViewWithTag("heartRate")).setText(String.valueOf(Math.round(this.heartRate)));
         ((TextView) template.findViewWithTag("diastolic")).setText(String.valueOf(Math.round(this.diastolic)));
         ((TextView) template.findViewWithTag("systolic")).setText(String.valueOf(Math.round(this.systolic)));
-
+        Util.for_each(template, view -> view.setOnFocusChangeListener(Util::toggleKeyboard));
         return template;
     }
 

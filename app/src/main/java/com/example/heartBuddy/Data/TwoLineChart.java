@@ -3,6 +3,7 @@ package com.example.heartBuddy.Data;
 import android.util.Pair;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -30,12 +31,14 @@ public class TwoLineChart extends Plotter {
     private int hrColor;
     private int diastolicColor;
     private int systolicColor;
+    private int axisColor;
 
     public TwoLineChart(
             LineChart hrChart, LineChart bpChart,
             String hrTitle, String bpTitle,
             String diastolicLabel, String systolicLabel,
-            int hrColor, int diastolicColor, int systolicColor
+            int hrColor, int diastolicColor, int systolicColor,
+            int axisColor
     ) {
         this.hrChart = hrChart; this.bpChart = bpChart;
         this.diastolicLabel = diastolicLabel; this.systolicLabel  =systolicLabel;
@@ -45,6 +48,7 @@ public class TwoLineChart extends Plotter {
         this.hrChart.getDescription().setText(hrTitle);
         this.bpChart.getDescription().setText(bpTitle);
         this.plotted = new ArrayList<>();
+        this.axisColor = axisColor;
     }
 
     @Override
@@ -114,10 +118,37 @@ public class TwoLineChart extends Plotter {
                 );
             }
         };
+        float TEXTSIZE = 16;
+        this.hrChart.setGridBackgroundColor(0);
+        this.hrChart.getLegend().setEnabled(false);
+        this.hrChart.getAxisLeft().setEnabled(false);
         this.hrChart.getXAxis().setValueFormatter(dateTimeFormatter);
+        this.hrChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        this.hrChart.getAxisRight().setTextSize(TEXTSIZE);
+        this.hrChart.getAxisRight().setTextColor(this.axisColor);
+        this.hrChart.getAxisRight().setAxisLineColor(this.axisColor);
+        this.hrChart.getAxisRight().setGridColor(this.axisColor);
+        this.hrChart.getXAxis().setTextSize(TEXTSIZE);
+        this.hrChart.getXAxis().setTextColor(this.axisColor);
+        this.hrChart.getXAxis().setAxisLineColor(this.axisColor);
+        this.hrChart.getXAxis().setGridColor(this.axisColor);
+        this.bpChart.setGridBackgroundColor(0);
+        this.bpChart.getLegend().setEnabled(false);
+        this.bpChart.getAxisLeft().setEnabled(false);
+        this.bpChart.getAxisRight().setTextSize(TEXTSIZE);
         this.bpChart.getXAxis().setValueFormatter(dateTimeFormatter);
-        this.hrChart.invalidate();
+        this.bpChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
+        this.bpChart.getAxisRight().setGridColor(this.axisColor);
+        this.bpChart.getAxisRight().setTextColor(this.axisColor);
+        this.bpChart.getAxisRight().setAxisLineColor(this.axisColor);
+        this.bpChart.getAxisRight().setGridColor(this.axisColor);
+        this.bpChart.getXAxis().setTextSize(TEXTSIZE);
+        this.bpChart.getXAxis().setGridColor(this.axisColor);
+        this.bpChart.getXAxis().setTextColor(this.axisColor);
+        this.bpChart.getXAxis().setAxisLineColor(this.axisColor);
+        this.bpChart.getXAxis().setGridColor(this.axisColor);
         this.bpChart.invalidate();
+        this.hrChart.invalidate();
         super.plot(data.map(dt -> ZonedDateTime.ofInstant(Instant.ofEpochSecond(dt.toEpochSecond() - start.toEpochSecond()), ZoneId.systemDefault()), x -> x, x -> x, x -> x));
         this.hrChart.notifyDataSetChanged();
         this.bpChart.notifyDataSetChanged();

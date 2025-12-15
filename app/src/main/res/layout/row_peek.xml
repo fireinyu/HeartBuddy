@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundColor">
+    android:background="?rowColor"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/peek_hr"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="1dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"
@@ -24,7 +28,7 @@
         android:text="@string/heart_rate_input_label"
         android:textAlignment="center"
         android:textColor="?hrColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +37,7 @@
         android:id="@+id/peek_dias"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="1dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"
@@ -47,7 +52,7 @@
         android:text="@string/diastolic_input_label"
         android:textAlignment="center"
         android:textColor="?diasColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/guideline12"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +61,7 @@
         android:id="@+id/peek_sys"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="1dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"
@@ -70,7 +76,7 @@
         android:text="@string/systolic_input_label"
         android:textAlignment="center"
         android:textColor="?sysColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
@@ -79,18 +85,18 @@
         android:id="@+id/peek_date"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="1dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"
         android:autoText="true"
-        android:backgroundTintMode="src_over"
         android:enabled="false"
         android:gravity="center|center_vertical"
         android:lines="1"
         android:tag="date"
         android:textAlignment="center"
         android:textColor="?attr/defaultFontColor"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/space"
         app:layout_constraintEnd_toStartOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -99,45 +105,51 @@
         android:id="@+id/peek_time"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="1dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="5sp"
         android:autoSizeTextType="uniform"
         android:autoText="true"
-        android:backgroundTint="#000000"
-        android:backgroundTintMode="src_over"
         android:enabled="false"
         android:gravity="center|center_vertical"
         android:lines="1"
         android:tag="time"
         android:textAlignment="center"
         android:textColor="?attr/defaultFontColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintEnd_toStartOf="@+id/guideline22"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintStart_toStartOf="@+id/guideline20"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.658" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.64" />
+        app:layout_constraintGuide_percent="0.6733" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.82" />
+        app:layout_constraintGuide_percent="0.82667" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.46" />
+        app:layout_constraintGuide_percent="0.48" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.47" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline11"
@@ -145,5 +157,45 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.23" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.24" />
+
+    <FrameLayout
+        android:id="@+id/space"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:background="?backgroundColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/spacevert"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?toggleOffColor"
+        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintEnd_toStartOf="@+id/peek_time"
+        app:layout_constraintStart_toEndOf="@+id/peek_date"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/spacevert2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?toggleOffColor"
+        app:layout_constraintBottom_toTopOf="@+id/space"
+        app:layout_constraintEnd_toStartOf="@+id/peek_sys"
+        app:layout_constraintStart_toEndOf="@+id/peek_time"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

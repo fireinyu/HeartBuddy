@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="backgroundColor" format="reference|color" />
-    <attr name="defaultFontColor" format="reference|color" />
-    <attr name="hintColor" format="reference|color" />
     <attr name="toggleOnColor" format="reference|color"/>
     <attr name="toggleOffColor" format="reference|color"/>
+    <attr name="rowColor" format="reference|color"/>
+    <attr name="fieldColor" format="reference|color" />
+    <attr name="highlightColor" format="reference|color" />
+    <attr name="defaultFontColor" format="reference|color" />
+    <attr name="defaultHintColor" format="reference|color" />
     <attr name="hrColor" format="reference|color" />
+    <attr name="hrHintColor" format="reference|color" />
     <attr name="diasColor" format="reference|color" />
+    <attr name="diasHintColor" format="reference|color" />
     <attr name="sysColor" format="reference|color" />
+    <attr name="sysHintColor" format="reference|color" />
 </resources>
