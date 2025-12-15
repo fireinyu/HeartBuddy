@@ -17,7 +17,6 @@ public class GlobalState {
     /* TODO LIST
      * 1. Import and Export (.csv)
      * 2. icons
-     * 4. Dark & light themes
      * 5. Deploy?
      */
     static Path appStorageRoot;

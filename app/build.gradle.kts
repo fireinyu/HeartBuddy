@@ -47,12 +47,4 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-    implementation("com.squareup.okhttp3:okhttp:5.3.2")
-
-    implementation(platform("ai.djl:bom:0.33.0"))
-    implementation("ai.djl:api")
-    implementation("ai.djl.android:core")
-    runtimeOnly("ai.djl.pytorch:pytorch-engine")
-    runtimeOnly("ai.djl.android:pytorch-native")
-    runtimeOnly("ai.djl.android:onnxruntime")
 }
