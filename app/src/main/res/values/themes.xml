@@ -11,21 +11,21 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- colors-->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="backgroundColor">@color/white</item>
-        <item name="toggleOnColor">#7D3BF8</item>
-        <item name="toggleOffColor">#80B6B6B6</item>
-        <item name="rowColor">#76B6A066</item>
-        <item name="fieldColor">#73E68D0B</item>
-        <item name="highlightColor">#F4F1BD</item>
-        <item name="defaultFontColor">@color/black</item>
-        <item name="defaultHintColor">@color/faint_grey</item>
-        <item name="hrColor">#2D9E31</item>
-        <item name="hrHintColor">#592D9E31</item>
-        <item name="diasColor">#344CD1</item>
-        <item name="diasHintColor">#59344CD1</item>
-        <item name="sysColor">@color/magenta</item>
-        <item name="sysHintColor">#59ED145A</item>
+        <item name="colorPrimary">#FF6200EE</item>
+        <item name="backgroundColor">#FFFFFFFF</item>
+        <item name="toggleOnColor">#7D3BF8</item> <!-- background for view that is enabled-->
+        <item name="toggleOffColor">#80B6B6B6</item> <!-- background for view that is disabled-->
+        <item name="rowColor">#76B6A066</item> <!-- background for a row for data views-->
+        <item name="fieldColor">#73E68D0B</item> <!-- background of a single data view that is not in focus-->
+        <item name="highlightColor">#F4F1BD</item> <!-- background of a single data view that is in focus-->
+        <item name="defaultFontColor">#FF000000</item>
+        <item name="defaultHintColor">#AF8C8C8C</item>
+        <item name="hrColor">#2D9E31</item> <!-- font and chart lines for heart rate data-->
+        <item name="hrHintColor">#592D9E31</item> <!-- text input hint for heart rate-->
+        <item name="diasColor">#344CD1</item> <!-- font and chart lines for diastolic pressure data-->
+        <item name="diasHintColor">#59344CD1</item> <!-- text input hint for diastolic pressure-->
+        <item name="sysColor">#ED145A</item> <!-- font and chart lines for systolic pressure data-->
+        <item name="sysHintColor">#59ED145A</item> <!-- text input hint for systolic pressure-->
     </style>
 
     <style name="Theme.HeartBuddy.NoActionBar">

@@ -2,8 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.HeartBuddy" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimaryVariant">@color/purple_200</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -11,6 +10,29 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- colors-->
+        <item name="colorPrimary">#FFBB86FC</item>
+        <item name="backgroundColor">#FF121212</item>
+        <item name="toggleOnColor">#FFBB86FC</item>
+        <item name="toggleOffColor">#80B6B6B6</item>
+        <item name="rowColor">#2D2D2D</item>
+        <item name="fieldColor">#70C88829</item>
+        <item name="highlightColor">#8A773F</item>
+        <item name="defaultFontColor">#FFFFFFFF</item>
+        <item name="defaultHintColor">#B3FFFFFF</item>
+        <item name="hrColor">#81C784</item>
+        <item name="hrHintColor">#5981C784</item>
+        <item name="diasColor">#64B5F6</item>
+        <item name="diasHintColor">#5964B5F6</item>
+        <item name="sysColor">#F06292</item>
+        <item name="sysHintColor">#59F06292</item>
     </style>
+    <style name="Theme.HeartBuddy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.HeartBuddy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.HeartBuddy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
