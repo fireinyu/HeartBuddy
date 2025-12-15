@@ -50,7 +50,7 @@ public class DataRow {
 
     public ViewGroup make() {
         ViewGroup template = (ViewGroup) context.getLayoutInflater().inflate(templateId, null, false);
-        ((TextView) template.findViewWithTag("date")).setText(String.format("%02d/%02d", date.getDayOfMonth(), date.getMonth().getValue()));
+        ((TextView) template.findViewWithTag("date")).setText(String.format("%02d.%02d", date.getMonth().getValue(), date.getDayOfMonth()));
         ((TextView) template.findViewWithTag("time")).setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
         ((TextView) template.findViewWithTag("heartRate")).setText(String.valueOf(Math.round(this.heartRate)));
         ((TextView) template.findViewWithTag("diastolic")).setText(String.valueOf(Math.round(this.diastolic)));

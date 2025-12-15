@@ -9,8 +9,8 @@
     <string name="list_fragment_title">前记录</string>
     <string name="picker_confirm_label">确定</string>
     <string name="heart_rate_input_label">心跳</string>
-    <string name="diastolic_input_label">血压(低)</string>
-    <string name="systolic_input_label">血压(高)</string>
+    <string name="diastolic_input_label">低压</string>
+    <string name="systolic_input_label">高压</string>
     <string name="start_edit_label">编辑</string>
     <string name="submit_label">确定</string>
     <string name="remove_label">删除</string>

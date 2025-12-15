@@ -78,7 +78,7 @@ public abstract class EditRow extends DataRow{
             } else {
                 this.datePicker.setVisibility(View.GONE);
                 this.date = LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth());
-                ((ToggleButton)btn).setTextOff(String.format("%02d/%02d", date.getDayOfMonth(), date.getMonth().getValue()));
+                ((ToggleButton)btn).setTextOff(String.format("%02d.%02d", date.getMonth().getValue(), date.getDayOfMonth()));
                 Util.set_enabled(row, true);
                 this.refreshSubmitButton(row);
                 ToggleButton nextView = row.findViewWithTag("time");
@@ -197,6 +197,7 @@ public abstract class EditRow extends DataRow{
                 row.<TextView>findViewWithTag("heartRate").setText("");
                 row.<TextView>findViewWithTag("diastolic").setText("");
                 row.<TextView>findViewWithTag("systolic").setText("");
+                row.requestFocus();
             });
             return row;
         }
@@ -242,6 +243,7 @@ public abstract class EditRow extends DataRow{
                     series.set(this.entryIndex, this.submit(row));
                     this.series.put(series);
                     btn.setEnabled(true);
+                    row.requestFocus();
                 }
             });
             View confirmRemove = row.findViewWithTag("confirmRemove");
