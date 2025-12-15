@@ -2,14 +2,11 @@ package com.example.heartBuddy;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
-import org.apache.commons.compress.utils.Iterators;
 
 import java.util.Iterator;
 import java.util.function.BiFunction;
@@ -37,7 +34,6 @@ public class Util {
 
     public static void for_each(View v, Consumer<View> consumer) {
         consumer.accept(v);
-        Log.d("debug_focus", String.valueOf(v));
         if (v instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) v;
             for (int idx = 0; idx < group.getChildCount(); idx++) {
@@ -54,9 +50,7 @@ public class Util {
 
     public static void toggleKeyboard(View view, boolean isFocused) {
         if (isFocused) {
-            Log.d("debug_focus", String.valueOf(view));
             if (view instanceof EditText) {
-                Log.d("debug_focus", "is edit");
                 imm.showSoftInput(view, 0);
             } else {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

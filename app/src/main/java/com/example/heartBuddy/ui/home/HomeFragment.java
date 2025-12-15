@@ -1,14 +1,11 @@
 package com.example.heartBuddy.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
@@ -16,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
 
 import com.example.heartBuddy.Data.DataRow;
@@ -71,7 +67,6 @@ public class HomeFragment extends Fragment {
                 Util.get_color(R.attr.sysColor),
                 Util.get_color(R.attr.defaultFontColor)
         );
-        Log.d("colors", ""+R.attr.hrColor+" "+R.attr.diasColor+" "+R.attr.sysColor);
         this.datePicker = this.root.findViewById(R.id.homeDatePicker);
         this.timePicker = this.root.findViewById(R.id.homeTimePicker);
         this.addRow = new EditRow.NewRow(
@@ -91,7 +86,6 @@ public class HomeFragment extends Fragment {
         ConstraintSet constraintSet = new ConstraintSet();
         v.addOnLayoutChangeListener((vk, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             boolean isImeVisible = root.getRootWindowInsets() != null && root.getRootWindowInsets().isVisible(WindowInsets.Type.ime());
-            Log.d("debug_layout", "IME visible: " + isImeVisible);
 
             constraintSet.clone(constraintLayout);
 
@@ -107,7 +101,6 @@ public class HomeFragment extends Fragment {
             // Apply the modified constraints
             constraintSet.applyTo(constraintLayout);
         });
-        Log.d("checknull", String.valueOf(GlobalState.series));
 
         Consumer<LocalObject<Series>> hook = obj -> this.refresh();
         GlobalState.series.addHook(hook);

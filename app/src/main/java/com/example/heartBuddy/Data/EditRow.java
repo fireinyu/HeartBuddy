@@ -1,17 +1,11 @@
 package com.example.heartBuddy.Data;
 
-import android.app.Activity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.method.KeyListener;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.view.inputmethod.InputMethodManager;
+
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,19 +16,14 @@ import android.widget.ToggleButton;
 import androidx.fragment.app.Fragment;
 
 import com.example.heartBuddy.Util;
-import com.google.gson.internal.Streams;
 
-import org.apache.commons.compress.utils.Iterators;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public abstract class EditRow extends DataRow{
@@ -104,7 +93,6 @@ public abstract class EditRow extends DataRow{
         });
         Iterator<TextView.OnEditorActionListener> doneListeners = Stream.<TextView.OnEditorActionListener>of(
                 (v, i, e) -> {
-                    Log.d("debugR", String.valueOf(e));
                     View nextView = row.findViewWithTag("diastolic");
                     nextView.requestFocus();
                     return true;
@@ -261,7 +249,6 @@ public abstract class EditRow extends DataRow{
                     confirmRemove.setEnabled(false);
                 }
             });
-            Log.d("check_refresh",String.valueOf(((TextView) row.findViewWithTag("heartRate")).getText()));
             return row;
         }
     }

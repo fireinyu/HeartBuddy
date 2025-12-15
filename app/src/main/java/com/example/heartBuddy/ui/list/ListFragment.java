@@ -1,7 +1,6 @@
 package com.example.heartBuddy.ui.list;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.heartBuddy.Data.DataRow;
 import com.example.heartBuddy.Data.EditRow;
 import com.example.heartBuddy.Data.LocalObject;
 import com.example.heartBuddy.Data.Series;
@@ -60,7 +58,6 @@ public class ListFragment extends Fragment {
     }
 
     public void refresh() {
-        Log.d("check_refresh", "refresh");
         this.modifyList.removeAllViews();
         Series series = GlobalState.series.get().orElse(new Series(new ArrayList<>()));
         LinearLayout.LayoutParams formParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 300);

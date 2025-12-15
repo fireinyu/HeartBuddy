@@ -1,26 +1,17 @@
 package com.example.heartBuddy.Data;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
+
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.heartBuddy.Util;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class DataRow {
     private int templateId;
