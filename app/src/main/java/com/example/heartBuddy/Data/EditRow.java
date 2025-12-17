@@ -3,6 +3,8 @@ package com.example.heartBuddy.Data;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,12 +20,16 @@ import androidx.fragment.app.Fragment;
 import com.example.heartBuddy.Util;
 
 
+import org.w3c.dom.Text;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class EditRow extends DataRow{
@@ -111,32 +117,77 @@ public abstract class EditRow extends DataRow{
                     return true;
                 }
         ).iterator();
-        TextWatcher textListener = new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                EditRow.this.refreshSubmitButton(row);
-            }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        //goddamn
+        EditText hrInput = row.findViewWithTag("systolic");
+        EditText diasInput = row.findViewWithTag("diastolic");
+        EditText sysInput = row.findViewWithTag("heartRate");
+        TextView hrMask = row.findViewWithTag("hrMask");
+        TextView diasMask = row.findViewWithTag("diasMask");
+        TextView sysMask = row.findViewWithTag("sysMask");
+        Iterator<TextWatcher> textListeners = Stream.of(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        EditText input = hrInput;
+                        TextView mask = hrMask;
+                        refreshTextSize(input, mask);
+                        EditRow.this.refreshSubmitButton(row);
+                    }
 
-            }
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
 
-            }
-        };
-        Stream.<TextView>of(
-                        row.findViewWithTag("systolic"),
-                        row.findViewWithTag("diastolic"),
-                        row.findViewWithTag("heartRate")
-                )
-                .filter(view -> view instanceof EditText)
-                .map(view -> (EditText)view)
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+                },
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        EditText input = diasInput;
+                        TextView mask = diasMask;
+                        refreshTextSize(input, mask);
+                        EditRow.this.refreshSubmitButton(row);
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+                },
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        EditText input = sysInput;
+                        TextView mask = sysMask;
+                        refreshTextSize(input, mask);
+                        EditRow.this.refreshSubmitButton(row);
+                    }
+
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+                }
+        ).iterator();
+        Stream.of(hrInput, diasInput, sysInput)
                 .peek(view -> view.setOnEditorActionListener(doneListeners.next()))
-                .forEach(view -> view.addTextChangedListener(textListener));
-
+                .forEach(view -> view.addTextChangedListener(textListeners.next()));
+        row.post(() -> this.refreshTextSize());
         return row;
     }
 
@@ -156,6 +207,33 @@ public abstract class EditRow extends DataRow{
                 row.findViewWithTag("systolic")
         ).allMatch(view -> view.getText().length()>0);
         row.<Button>findViewWithTag("submit").setEnabled(enabled);
+    }
+
+    private void refreshTextSize(EditText input, TextView mask) {
+
+        Editable inputText = input.getText();
+        if (inputText.length() == 0) {
+            mask.setText(input.getHint());
+
+        } else {
+            mask.setText(inputText);
+        }
+        input.setTextSize(TypedValue.COMPLEX_UNIT_PX, mask.getTextSize());
+    }
+    public void refreshTextSize() {
+        Util.zipWith(
+                Stream.<EditText>of(
+                        row.findViewWithTag("heartRate"),
+                        row.findViewWithTag("diastolic"),
+                        row.findViewWithTag("systolic")
+                ),
+                Stream.<TextView>of(
+                        row.findViewWithTag("hrMask"),
+                        row.findViewWithTag("diasMask"),
+                        row.findViewWithTag("sysMask")
+                ),
+                (input, mask) -> {refreshTextSize(input, mask); return true;})
+                .forEach(input -> {});
     }
 
     public static class NewRow extends EditRow{

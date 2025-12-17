@@ -3,6 +3,7 @@ package com.example.heartBuddy.Data;
 import android.util.Pair;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -65,6 +66,7 @@ public class TwoLineChart extends Plotter {
                 .map(pair -> new Entry(pair.first.toEpochSecond(), pair.second.floatValue()))
                 .collect(Collectors.toList());
         LineDataSet dataSet = new LineDataSet(entries, null);
+        dataSet.setDrawValues(false);
         dataSet.setColor(this.hrColor);
 //        dataSet.setDrawCircles(false);
 //        dataSet.setDrawCircleHole(false);
@@ -78,6 +80,7 @@ public class TwoLineChart extends Plotter {
                 .map(pair -> new Entry(pair.first.toEpochSecond(), pair.second.floatValue()))
                 .collect(Collectors.toList());
         LineDataSet dataSet = new LineDataSet(entries, this.diastolicLabel);
+        dataSet.setDrawValues(false);
         dataSet.setColor(this.diastolicColor);
 //        dataSet.setDrawCircles(false);
 //        dataSet.setDrawCircleHole(false);
@@ -91,6 +94,7 @@ public class TwoLineChart extends Plotter {
                 .map(pair -> new Entry(pair.first.toEpochSecond(), pair.second.floatValue()))
                 .collect(Collectors.toList());
         LineDataSet dataSet = new LineDataSet(entries, this.systolicLabel);
+        dataSet.setDrawValues(false);
         dataSet.setColor(this.systolicColor);
 //        dataSet.setDrawCircles(false);
 //        dataSet.setDrawCircleHole(false);
@@ -115,8 +119,10 @@ public class TwoLineChart extends Plotter {
                 );
             }
         };
-        float TEXTSIZE = 24;
+        float TEXTSIZE = 22;
         this.hrChart.setGridBackgroundColor(0);
+        MarkerView marker = new ChartMarker(this.hrChart.getContext());
+        this.hrChart.setMarker(marker);
         this.hrChart.getLegend().setEnabled(false);
         this.hrChart.getAxisLeft().setEnabled(false);
         this.hrChart.getXAxis().setValueFormatter(dateTimeFormatter);
@@ -132,6 +138,7 @@ public class TwoLineChart extends Plotter {
         this.hrChart.getXAxis().setAxisLineColor(this.axisColor);
         this.hrChart.getXAxis().setGridColor(this.axisColor);
         this.bpChart.setGridBackgroundColor(0);
+        this.bpChart.setMarker(marker);
         this.bpChart.getLegend().setEnabled(false);
         this.bpChart.getAxisLeft().setEnabled(false);
         this.bpChart.getAxisRight().setTextSize(TEXTSIZE);

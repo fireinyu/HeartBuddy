@@ -1,11 +1,15 @@
 package com.example.heartBuddy.ui.list;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
@@ -23,6 +27,7 @@ import com.example.heartBuddy.databinding.FragmentListBinding;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class ListFragment extends Fragment {
 
@@ -65,7 +70,7 @@ public class ListFragment extends Fragment {
         Util.for_each(root, v -> v.setClickable(true));
         Util.for_each(root, v -> v.setFocusableInTouchMode(true));
         Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
-        series.extract(dp -> new EditRow.ModifyRow(
+        List<EditRow.ModifyRow> rows = series.extract(dp -> new EditRow.ModifyRow(
                         this,
                         R.layout.row_modify,
                         GlobalState.series,
@@ -75,11 +80,13 @@ public class ListFragment extends Fragment {
                         dp.getDiastolic(),
                         dp.getSystolic(),
                         this.datePicker, this.timePicker
-                )).stream()
+                ));
+        rows.stream()
                 .map(row -> row.make())
                 .peek(row -> row.setLayoutParams(formParams))
                 .forEach(row -> this.modifyList.addView(row,0));
     }
+
 
     @Override
     public void onDestroyView() {
