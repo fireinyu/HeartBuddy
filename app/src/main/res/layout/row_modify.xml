@@ -24,11 +24,11 @@
             android:id="@+id/mod_hr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/edit_field_background"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="5sp"
-            android:autoSizeTextType="uniform"
-            android:autoText="true"
+            android:autoSizeTextType="none"
+            android:autoText="false"
+            android:background="@drawable/edit_field_background"
             android:ellipsize="none"
             android:ems="10"
             android:enabled="false"
@@ -37,11 +37,13 @@
             android:lines="1"
             android:scaleY="2"
             android:selectAllOnFocus="true"
+            android:singleLine="true"
             android:tag="heartRate"
             android:text="@string/heart_rate_input_label"
             android:textAlignment="center"
             android:textColor="?hrColor"
-            android:textScaleX="2" />
+            android:textScaleX="2"
+            android:textSize="15sp" />
     </FrameLayout>
 
     <FrameLayout
@@ -59,10 +61,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autoSizeMaxTextSize="100sp"
-            android:background="@drawable/edit_field_background"
             android:autoSizeMinTextSize="5sp"
-            android:autoSizeTextType="uniform"
-            android:autoText="true"
+            android:autoSizeTextType="none"
+            android:autoText="false"
+            android:background="@drawable/edit_field_background"
             android:ellipsize="none"
             android:ems="10"
             android:enabled="false"
@@ -71,11 +73,13 @@
             android:lines="1"
             android:scaleY="2"
             android:selectAllOnFocus="true"
+            android:singleLine="true"
             android:tag="diastolic"
             android:text="@string/diastolic_input_label"
             android:textAlignment="center"
             android:textColor="?diasColor"
-            android:textScaleX="2" />
+            android:textScaleX="2"
+            android:textSize="15sp" />
     </FrameLayout>
 
 
@@ -93,11 +97,11 @@
             android:id="@+id/mod_sys"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/edit_field_background"
             android:autoSizeMaxTextSize="100sp"
             android:autoSizeMinTextSize="5sp"
-            android:autoSizeTextType="uniform"
-            android:autoText="true"
+            android:autoSizeTextType="none"
+            android:autoText="false"
+            android:background="@drawable/edit_field_background"
             android:ellipsize="none"
             android:ems="10"
             android:enabled="false"
@@ -106,11 +110,13 @@
             android:lines="1"
             android:scaleY="2"
             android:selectAllOnFocus="true"
+            android:singleLine="true"
             android:tag="systolic"
             android:text="@string/systolic_input_label"
             android:textAlignment="center"
             android:textColor="?sysColor"
-            android:textScaleX="2" />
+            android:textScaleX="2"
+            android:textSize="15sp" />
     </FrameLayout>
 
 

@@ -16,7 +16,7 @@ import com.example.heartBuddy.Data.Series;
 public class GlobalState {
     /* TODO LIST
      * 1. Import and Export (.csv)
-     * 2. icons
+     * 2. auto size hack for edittexts
      * 5. Deploy?
      */
     static Path appStorageRoot;

@@ -115,7 +115,7 @@ public class TwoLineChart extends Plotter {
                 );
             }
         };
-        float TEXTSIZE = 16;
+        float TEXTSIZE = 20;
         this.hrChart.setGridBackgroundColor(0);
         this.hrChart.getLegend().setEnabled(false);
         this.hrChart.getAxisLeft().setEnabled(false);

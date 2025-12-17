@@ -39,7 +39,8 @@
             android:tag="heartRate"
             android:textColor="?hrColor"
             android:textColorHint="?attr/hrHintColor"
-            android:textScaleX="2" />
+            android:textScaleX="2"
+            android:textSize="20sp" />
     </FrameLayout>
 
     <FrameLayout
@@ -73,7 +74,8 @@
             android:tag="diastolic"
             android:textColor="?diasColor"
             android:textColorHint="?attr/diasHintColor"
-            android:textScaleX="2" />
+            android:textScaleX="2"
+            android:textSize="20sp" />
     </FrameLayout>
 
     <FrameLayout
