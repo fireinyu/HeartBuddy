@@ -17,6 +17,7 @@ public class GlobalState {
     /* TODO LIST
      * 1. Import and Export (.csv)
      * 2. auto size hack for edittexts
+     * 3. remove hardcoding of chart label size
      * 5. Deploy?
      */
     static Path appStorageRoot;

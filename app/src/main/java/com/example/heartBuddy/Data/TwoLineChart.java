@@ -115,17 +115,19 @@ public class TwoLineChart extends Plotter {
                 );
             }
         };
-        float TEXTSIZE = 20;
+        float TEXTSIZE = 24;
         this.hrChart.setGridBackgroundColor(0);
         this.hrChart.getLegend().setEnabled(false);
         this.hrChart.getAxisLeft().setEnabled(false);
         this.hrChart.getXAxis().setValueFormatter(dateTimeFormatter);
         this.hrChart.getXAxis().setPosition(XAxis.XAxisPosition.TOP_INSIDE);
         this.hrChart.getAxisRight().setTextSize(TEXTSIZE);
+        this.hrChart.getAxisRight().setLabelCount(6);
         this.hrChart.getAxisRight().setTextColor(this.axisColor);
         this.hrChart.getAxisRight().setAxisLineColor(this.axisColor);
         this.hrChart.getAxisRight().setGridColor(this.axisColor);
         this.hrChart.getXAxis().setTextSize(TEXTSIZE);
+        this.hrChart.getXAxis().setLabelCount(4);
         this.hrChart.getXAxis().setTextColor(this.axisColor);
         this.hrChart.getXAxis().setAxisLineColor(this.axisColor);
         this.hrChart.getXAxis().setGridColor(this.axisColor);
@@ -140,6 +142,8 @@ public class TwoLineChart extends Plotter {
         this.bpChart.getAxisRight().setAxisLineColor(this.axisColor);
         this.bpChart.getAxisRight().setGridColor(this.axisColor);
         this.bpChart.getXAxis().setTextSize(TEXTSIZE);
+        this.bpChart.getAxisRight().setLabelCount(6);
+        this.bpChart.getXAxis().setLabelCount(4);
         this.bpChart.getXAxis().setGridColor(this.axisColor);
         this.bpChart.getXAxis().setTextColor(this.axisColor);
         this.bpChart.getXAxis().setAxisLineColor(this.axisColor);
