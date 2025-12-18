@@ -14,7 +14,7 @@
             android:title="@string/list_fragment_title" />
         <item
             android:id="@+id/nav_export"
-            android:icon="@drawable/ic_menu_list"
+            android:icon="@drawable/ic_menu_export"
             android:title="@string/export_fragment_title" />
     </group>
 </menu>
