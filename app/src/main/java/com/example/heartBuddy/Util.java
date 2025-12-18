@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Iterator;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -21,6 +24,14 @@ public class Util {
     public static void init(Context context) {
         Util.context = context;
         imm = (InputMethodManager)context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+    }
+
+    public static String format_date(LocalDate date) {
+        return String.format("%02d.%02d", date.getMonth().getValue(), date.getDayOfMonth());
+    }
+
+    public static String format_time(LocalTime time) {
+        return String.format("%02d:%02d", time.getHour(), time.getMinute());
     }
     public static void set_enabled(View v, boolean enabled) {
         v.setEnabled(enabled);

@@ -2,6 +2,7 @@ package com.example.heartBuddy.Data;
 
 import android.util.Pair;
 
+import com.example.heartBuddy.Util;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
@@ -110,18 +111,13 @@ public class TwoLineChart extends Plotter {
         ZonedDateTime start = data.getDateTimes().get(0);
         ValueFormatter dateTimeFormatter = new ValueFormatter() {
             @Override
-            public String getFormattedValue(float value) {
-                ZonedDateTime dt = start.plus(Duration.ofSeconds((long) value));
-                return String.format(
-                        "%d/%d",
-                        dt.getDayOfMonth(),
-                        dt.getMonth().getValue()
-                );
+            public String getFormattedValue(float delta) {
+                return Util.format_date(start.plus(Duration.ofSeconds((long)delta)).toLocalDate());
             }
         };
         float TEXTSIZE = 22;
-        this.hrChart.setGridBackgroundColor(0);
         MarkerView marker = new ChartMarker(this.hrChart.getContext());
+        this.hrChart.setGridBackgroundColor(0);
         this.hrChart.setMarker(marker);
         this.hrChart.getLegend().setEnabled(false);
         this.hrChart.getAxisLeft().setEnabled(false);
@@ -132,6 +128,7 @@ public class TwoLineChart extends Plotter {
         this.hrChart.getAxisRight().setTextColor(this.axisColor);
         this.hrChart.getAxisRight().setAxisLineColor(this.axisColor);
         this.hrChart.getAxisRight().setGridColor(this.axisColor);
+        this.hrChart.getXAxis().setGranularity(Duration.ofDays(1).getSeconds());
         this.hrChart.getXAxis().setTextSize(TEXTSIZE);
         this.hrChart.getXAxis().setLabelCount(4);
         this.hrChart.getXAxis().setTextColor(this.axisColor);
@@ -150,6 +147,7 @@ public class TwoLineChart extends Plotter {
         this.bpChart.getAxisRight().setGridColor(this.axisColor);
         this.bpChart.getXAxis().setTextSize(TEXTSIZE);
         this.bpChart.getAxisRight().setLabelCount(6);
+        this.bpChart.getXAxis().setGranularity(Duration.ofDays(1).getSeconds());
         this.bpChart.getXAxis().setLabelCount(4);
         this.bpChart.getXAxis().setGridColor(this.axisColor);
         this.bpChart.getXAxis().setTextColor(this.axisColor);

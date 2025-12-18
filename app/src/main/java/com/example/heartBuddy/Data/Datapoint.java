@@ -1,12 +1,23 @@
 package com.example.heartBuddy.Data;
 
 import java.io.Serializable;
+import java.nio.DoubleBuffer;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Datapoint implements Serializable {
 
+    public static Datapoint from(String[] data) {
+        return new Datapoint(
+                ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.valueOf(data[0])), ZoneId.systemDefault()),
+                Double.valueOf(data[3]),
+                Double.valueOf(data[2]),
+                Double.valueOf(data[1])
+        );
+    }
     private Long dateTime;
 
     private double heartRate;
@@ -36,4 +47,10 @@ public class Datapoint implements Serializable {
         return this.systolic;
     }
 
+    public String[] export() {
+        return Stream.of(dateTime, systolic, diastolic, heartRate)
+                .map(val -> String.valueOf(val))
+                .collect(Collectors.toList())
+                .toArray(new String[]{});
+    }
 }

@@ -9,23 +9,36 @@
 
     <string name="menu_home">Home</string>
 
-    <string name = "app_title">Heart Buddy</string>
-    <string name = "home_fragment_title">Home</string>
-    <string name = "list_fragment_title">List</string>
+    <string name="app_title">Heart Buddy</string>
+    <string name="home_fragment_title">Home</string>
+    <string name="list_fragment_title">List</string>
+    <string name="export_fragment_title">Import / Export</string>
 
-    <string name = "picker_confirm_label">Confirm</string>
-    <string name = "heart_rate_input_label">Heart rate /bpm</string>
-    <string name = "diastolic_input_label">Blood pressure (DIAS) /mmHg</string>
-    <string name = "systolic_input_label">Blood pressure (SYS) /mmHg</string>
-    <string name = "start_edit_label">edit</string>
-    <string name = "submit_label">Submit</string>
-    <string name = "remove_label">Remove</string>
-    <string name = "remove_confirm">Confirm remove</string>
-    <string name = "remove_cancel">Cancel remove</string>
+    <string name="picker_confirm_label">Confirm</string>
+    <string name="heart_rate_input_label">Heart rate /bpm</string>
+    <string name="diastolic_input_label">Blood pressure (DIAS) /mmHg</string>
+    <string name="systolic_input_label">Blood pressure (SYS) /mmHg</string>
 
-    <string name = "hr_chart_title">Heart Rate /bpm</string>
-    <string name = "bp_chart_title">Blood Pressure /mmHg</string>
-    <string name = "diastolic_line_label">diastolic</string>
-    <string name = "systolic_line_label">systolic</string>
+    <string name="start_edit_label">edit</string>
+    <string name="submit_label">Submit</string>
+    <string name="remove_label">Remove</string>
+    <string name="remove_confirm">Confirm remove</string>
+    <string name="remove_cancel">Cancel remove</string>
+    <string name="file_dest_label">File name:</string>
+    <string name="default_dest" translatable="false">heart_buddy_data</string>
+    <string name="export_label">Export</string>
+    <string name="import_label">Import</string>
+    <string name="import_verify">IMPORT</string>
+    <string name="import_warning">WARNING: This action will overwrite and permanently erase your existing in-app data. Enter \"IMPORT\" if you wish to proceed.</string>
+    <string name="import_confirm">Confirm</string>
+    <string name="import_cancel">Cancel</string>
+
+
+
+
+    <string name="hr_chart_title">Heart Rate /bpm</string>
+    <string name="bp_chart_title">Blood Pressure /mmHg</string>
+    <string name="diastolic_line_label">diastolic</string>
+    <string name="systolic_line_label">systolic</string>
 
 </resources>

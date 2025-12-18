@@ -7,6 +7,7 @@
     <string name="app_title">血压记</string>
     <string name="home_fragment_title">新纪录 / 看图</string>
     <string name="list_fragment_title">前记录</string>
+    <string name="export_fragment_title">导入 / 导出</string>
     <string name="picker_confirm_label">确定</string>
     <string name="heart_rate_input_label">心跳</string>
     <string name="diastolic_input_label">低压</string>
@@ -16,8 +17,15 @@
     <string name="remove_label">删除</string>
     <string name="remove_confirm">确定删除</string>
     <string name="remove_cancel">不删除</string>
+    <string name="import_cancel">不导入</string>
     <string name="hr_chart_title">心跳</string>
     <string name="bp_chart_title">血压</string>
     <string name="diastolic_line_label">低</string>
     <string name="systolic_line_label">高</string>
+    <string name="export_label">导出</string>
+    <string name="import_warning">" 警告：此操作将覆盖并永久删除您现有的应用内数据。如果您想继续，请输入“仍要导入”。"</string>
+    <string name="import_confirm">确定导入</string>
+    <string name="import_label">导入</string>
+    <string name="import_verify">仍要导入</string>
+    <string name="file_dest_label">" 文件名："</string>
 </resources>

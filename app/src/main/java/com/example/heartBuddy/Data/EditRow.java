@@ -26,6 +26,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +75,7 @@ public abstract class EditRow extends DataRow{
             } else {
                 this.datePicker.setVisibility(View.GONE);
                 this.date = LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth());
-                ((ToggleButton)btn).setTextOff(String.format("%02d.%02d", date.getMonth().getValue(), date.getDayOfMonth()));
+                ((ToggleButton)btn).setTextOff(Util.format_date(this.date));
                 Util.set_enabled(row, true);
                 this.refreshSubmitButton(row);
                 ToggleButton nextView = row.findViewWithTag("time");
@@ -92,7 +94,7 @@ public abstract class EditRow extends DataRow{
             } else {
                 this.timePicker.setVisibility(View.GONE);
                 this.time = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
-                ((ToggleButton)btn).setTextOff(String.format("%02d:%02d", time.getHour(), time.getMinute()));
+                ((ToggleButton)btn).setTextOff(Util.format_time(this.time));
                 Util.set_enabled(row, true);
                 this.refreshSubmitButton(row);
             }

@@ -3,6 +3,7 @@ package com.example.heartBuddy.Data;
 import android.util.Pair;
 
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +11,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 public class Series implements Serializable {
 
+    public static Series from(List<String[]>data) {
+        return new Series(data.stream()
+                .map(row -> Datapoint.from(row))
+                .collect(Collectors.toList())
+        );
+    }
     private ArrayList<Datapoint> data;
 
     public Series (Datapoint[] datapoints) {
@@ -92,6 +98,12 @@ public class Series implements Serializable {
     public <T> List<T> extract(Function<? super Datapoint, T> extractor){
         return this.data.stream()
                 .map(dp -> extractor.apply(dp))
+                .collect(Collectors.toList());
+    }
+
+    public List<String[]> export() {
+        return this.data.stream()
+                .map(dp -> dp.export())
                 .collect(Collectors.toList());
     }
 }
