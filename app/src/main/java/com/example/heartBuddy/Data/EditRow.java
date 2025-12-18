@@ -3,7 +3,6 @@ package com.example.heartBuddy.Data;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +18,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.heartBuddy.Util;
 
-
-import org.w3c.dom.Text;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class EditRow extends DataRow{

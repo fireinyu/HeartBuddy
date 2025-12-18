@@ -1,6 +1,5 @@
 package com.example.heartBuddy.Data;
 
-
 import android.view.ViewGroup;
 import android.widget.TextView;
 

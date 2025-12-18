@@ -102,7 +102,6 @@ public class ExportFragment extends Fragment {
             );
             writer.flush();
             writer.close();
-            Log.d("debug_export",String.valueOf(dest.toPath()));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
