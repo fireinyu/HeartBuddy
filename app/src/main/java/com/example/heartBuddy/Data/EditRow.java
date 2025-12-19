@@ -185,6 +185,17 @@ public abstract class EditRow extends DataRow{
         return row;
     }
 
+    @Override
+    public void resetDateTime() {
+        super.resetDateTime();
+        this.row.<TextView>findViewWithTag("date").setText(Util.format_date(this.date));
+        this.datePicker.updateDate(this.date.getYear(), this.date.getMonthValue()-1, this.date.getDayOfMonth());
+        this.row.<TextView>findViewWithTag("time").setText(Util.format_time(this.time));
+        this.timePicker.setHour(this.time.getHour());
+        this.timePicker.setMinute(this.time.getMinute());
+
+    }
+
     Datapoint submit(ViewGroup row) {
         return new Datapoint(
                 ZonedDateTime.of(this.date, this.time, ZoneId.systemDefault()),
@@ -229,6 +240,8 @@ public abstract class EditRow extends DataRow{
                 (input, mask) -> {refreshTextSize(input, mask); return true;})
                 .forEach(input -> {});
     }
+
+
 
     public static class NewRow extends EditRow{
         private LocalObject<Series> series;

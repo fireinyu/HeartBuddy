@@ -129,6 +129,7 @@ public class HomeFragment extends Fragment {
                 .forEach(row -> this.peekList.addView(row,0));
         this.plotter.unplot();
         this.plotter.plot(series);
+        this.addRow.resetDateTime();
     }
     @Override
     public void onDestroyView() {

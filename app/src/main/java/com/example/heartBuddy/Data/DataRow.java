@@ -49,4 +49,8 @@ public class DataRow {
         return template;
     }
 
+    public void resetDateTime() {
+        this.date = ZonedDateTime.now().toLocalDate();
+        this.time = ZonedDateTime.now().toLocalTime();
+    }
 }
