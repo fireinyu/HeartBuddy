@@ -65,6 +65,8 @@ public class ListFragment extends Fragment {
         EditRow.ModifyRow.resetIndex();
         Util.for_each(root, v -> v.setClickable(true));
         Util.for_each(root, v -> v.setFocusableInTouchMode(true));
+        Util.for_each(datePicker, v -> v.setFocusable(false));
+        Util.for_each(timePicker, v -> v.setFocusable(false));
         Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
         List<EditRow.ModifyRow> rows = series.extract(dp -> new EditRow.ModifyRow(
                         this,

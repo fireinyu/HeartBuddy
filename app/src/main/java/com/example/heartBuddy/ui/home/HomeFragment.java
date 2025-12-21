@@ -78,6 +78,8 @@ public class HomeFragment extends Fragment {
         );
         Util.for_each(root, v -> v.setClickable(true));
         Util.for_each(root, v -> v.setFocusableInTouchMode(true));
+        Util.for_each(datePicker, v -> v.setFocusable(false));
+        Util.for_each(timePicker, v -> v.setFocusable(false));
         Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
         View v = this.addRow.make();
         this.addRowContainer.addView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
