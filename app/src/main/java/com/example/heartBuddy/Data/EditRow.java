@@ -1,5 +1,7 @@
 package com.example.heartBuddy.Data;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 
@@ -14,7 +16,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
-import androidx.fragment.app.Fragment;
 
 import com.example.heartBuddy.Util;
 
@@ -22,73 +23,47 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
 public abstract class EditRow extends DataRow{
 
-    private DatePicker datePicker;
-    private TimePicker timePicker;
-    private Fragment context;
-    private ViewGroup row;
-
-    public EditRow(
-            Fragment context,
-            int templateId,
-            ZonedDateTime dateTime,
-            double heartRate,
-            double diastolic,
-            double systolic,
-            DatePicker datePicker, TimePicker timePicker
-    ){
-        super(context, templateId, dateTime, heartRate, diastolic, systolic);
-        this.context = context;
-        this.datePicker = datePicker;
-        this.timePicker = timePicker;
-        this.datePicker.setVisibility(View.GONE);
-        this.timePicker.setVisibility(View.GONE);
-    }
-
-    @Override
-    public ViewGroup make() {
-        row = super.make();
+    public static ViewGroup make(Activity context, int layoutId, DatePicker datePicker, TimePicker timePicker) {
+        ViewGroup row = DataRow.make(context, layoutId);
         ToggleButton dateBtn = row.findViewWithTag("date");
         ToggleButton timeBtn = row.findViewWithTag("time");
         dateBtn.setTextOff(dateBtn.getText());
         dateBtn.setOnCheckedChangeListener((btn, checked) -> {
-            this.row.requestFocus();
+            row.requestFocus();
             if (checked) {
                 Util.set_enabled(row, false);
                 Util.set_enabled(btn, true);
                 Util.set_enabled(timeBtn, true);
                 timeBtn.setChecked(false);
-                this.datePicker.setVisibility(View.VISIBLE);
+                datePicker.setVisibility(View.VISIBLE);
             } else {
-                this.datePicker.setVisibility(View.GONE);
-                this.date = LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth());
-                ((ToggleButton)btn).setTextOff(Util.format_date(this.date));
+                datePicker.setVisibility(View.GONE);
+                ((ToggleButton)btn).setTextOff(Util.format_date(LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth())));
                 Util.set_enabled(row, true);
-                this.refreshSubmitButton(row);
+                refreshSubmitButton(row);
                 ToggleButton nextView = row.findViewWithTag("time");
                 nextView.setChecked(true);
             }
         });
         timeBtn.setTextOff(timeBtn.getText());
         timeBtn.setOnCheckedChangeListener((btn, checked) -> {
-            this.row.requestFocus();
+            row.requestFocus();
             if (checked) {
                 Util.set_enabled(row, false);
                 Util.set_enabled(btn, true);
                 Util.set_enabled(dateBtn, true);
                 dateBtn.setChecked(false);
-                this.timePicker.setVisibility(View.VISIBLE);
+                timePicker.setVisibility(View.VISIBLE);
             } else {
-                this.timePicker.setVisibility(View.GONE);
-                this.time = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
-                ((ToggleButton)btn).setTextOff(Util.format_time(this.time));
+                timePicker.setVisibility(View.GONE);
+                ((ToggleButton)btn).setTextOff(Util.format_time(LocalTime.of(timePicker.getHour(), timePicker.getMinute())));
                 Util.set_enabled(row, true);
-                this.refreshSubmitButton(row);
+                refreshSubmitButton(row);
             }
         });
         Iterator<TextView.OnEditorActionListener> doneListeners = Stream.<TextView.OnEditorActionListener>of(
@@ -111,8 +86,6 @@ public abstract class EditRow extends DataRow{
                     return true;
                 }
         ).iterator();
-
-        //goddamn
         EditText hrInput = row.findViewWithTag("systolic");
         EditText diasInput = row.findViewWithTag("diastolic");
         EditText sysInput = row.findViewWithTag("heartRate");
@@ -126,7 +99,7 @@ public abstract class EditRow extends DataRow{
                         EditText input = hrInput;
                         TextView mask = hrMask;
                         refreshTextSize(input, mask);
-                        EditRow.this.refreshSubmitButton(row);
+                        refreshSubmitButton(row);
                     }
 
                     @Override
@@ -145,7 +118,7 @@ public abstract class EditRow extends DataRow{
                         EditText input = diasInput;
                         TextView mask = diasMask;
                         refreshTextSize(input, mask);
-                        EditRow.this.refreshSubmitButton(row);
+                        refreshSubmitButton(row);
                     }
 
                     @Override
@@ -164,7 +137,7 @@ public abstract class EditRow extends DataRow{
                         EditText input = sysInput;
                         TextView mask = sysMask;
                         refreshTextSize(input, mask);
-                        EditRow.this.refreshSubmitButton(row);
+                        refreshSubmitButton(row);
                     }
 
                     @Override
@@ -181,31 +154,52 @@ public abstract class EditRow extends DataRow{
         Stream.of(hrInput, diasInput, sysInput)
                 .peek(view -> view.setOnEditorActionListener(doneListeners.next()))
                 .forEach(view -> view.addTextChangedListener(textListeners.next()));
-        row.post(() -> this.refreshTextSize());
+        row.post(() -> refreshTextSize(row));
         return row;
+    }
+    private DatePicker datePicker;
+
+    private TimePicker timePicker;
+
+    public EditRow(
+            ZonedDateTime dateTime,
+            double heartRate,
+            double diastolic,
+            double systolic,
+            DatePicker datePicker, TimePicker timePicker
+    ){
+        super(dateTime, heartRate, diastolic, systolic);
+        this.setPickers(datePicker, timePicker);
     }
 
     @Override
-    public void resetDateTime() {
-        super.resetDateTime();
-        this.row.<TextView>findViewWithTag("date").setText(Util.format_date(this.date));
+    public void populate(ViewGroup row) {
+        super.populate(row);
+        this.resetDateTime(row);
+    }
+
+    public void resetDateTime(ViewGroup row) {
+        row.<ToggleButton>findViewWithTag("date").setTextOff(Util.format_date(this.date));
         this.datePicker.updateDate(this.date.getYear(), this.date.getMonthValue()-1, this.date.getDayOfMonth());
-        this.row.<TextView>findViewWithTag("time").setText(Util.format_time(this.time));
+        row.<ToggleButton>findViewWithTag("time").setTextOff(Util.format_time(this.time));
         this.timePicker.setHour(this.time.getHour());
         this.timePicker.setMinute(this.time.getMinute());
-
     }
 
     Datapoint submit(ViewGroup row) {
         return new Datapoint(
-                ZonedDateTime.of(this.date, this.time, ZoneId.systemDefault()),
+                ZonedDateTime.of(
+                        LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth()),
+                        LocalTime.of(timePicker.getHour(), timePicker.getMinute()),
+                        ZoneId.systemDefault()
+                ),
                 Double.parseDouble(row.<TextView>findViewWithTag("heartRate").getText().toString()),
                 Double.parseDouble(row.<TextView>findViewWithTag("diastolic").getText().toString()),
                 Double.parseDouble(row.<TextView>findViewWithTag("systolic").getText().toString())
         );
     }
 
-    private void refreshSubmitButton(ViewGroup row) {
+    private static void refreshSubmitButton(ViewGroup row) {
         boolean enabled = Stream.<TextView>of(
                 row.findViewWithTag("heartRate"),
                 row.findViewWithTag("diastolic"),
@@ -214,7 +208,7 @@ public abstract class EditRow extends DataRow{
         row.<Button>findViewWithTag("submit").setEnabled(enabled);
     }
 
-    private void refreshTextSize(EditText input, TextView mask) {
+    private static void refreshTextSize(EditText input, TextView mask) {
 
         Editable inputText = input.getText();
         if (inputText.length() == 0) {
@@ -225,7 +219,7 @@ public abstract class EditRow extends DataRow{
         }
         input.setTextSize(TypedValue.COMPLEX_UNIT_PX, mask.getTextSize());
     }
-    public void refreshTextSize() {
+    public static void refreshTextSize(ViewGroup row) {
         Util.zipWith(
                 Stream.<EditText>of(
                         row.findViewWithTag("heartRate"),
@@ -241,90 +235,56 @@ public abstract class EditRow extends DataRow{
                 .forEach(input -> {});
     }
 
+    public void setPickers(DatePicker datePicker, TimePicker timePicker) {
+        this.datePicker = datePicker;
+        this.timePicker = timePicker;
+        if (datePicker != null) {
+            this.datePicker.setVisibility(View.GONE);
 
+        }
+        if (timePicker != null) {
+            this.timePicker.setVisibility(View.GONE);
+        }
+    }
 
     public static class NewRow extends EditRow{
-        private LocalObject<Series> series;
+
+        public static ViewGroup make(Activity context, int layoutId, DatePicker datePicker, TimePicker timePicker) {
+            ViewGroup row = EditRow.make(context, layoutId, datePicker, timePicker);
+            return row;
+        }
+        private Series series;
 
         public NewRow(
-                Fragment context,
-                int templateId,
-                LocalObject<Series> series,
+                Series series,
                 DatePicker datePicker, TimePicker timePicker
         ){
-            super(context, templateId, ZonedDateTime.now(), -1, -1, -1, datePicker, timePicker);
+            super(ZonedDateTime.now(), -1, -1, -1, datePicker, timePicker);
             this.series = series;
 
         }
 
         @Override
-        public ViewGroup make() {
-            ViewGroup row = super.make();
+        public void populate(ViewGroup row) {
+            super.populate(row);
+            this.resetDateTime(row);
             row.<TextView>findViewWithTag("heartRate").setText("");
             row.<TextView>findViewWithTag("diastolic").setText("");
             row.<TextView>findViewWithTag("systolic").setText("");
             row.<Button>findViewWithTag("submit").setOnClickListener(btn -> {
-                Series series = this.series.get().orElse(new Series(new ArrayList<>()));
                 series.add(this.submit(row));
-                this.series.put(series);
                 row.<TextView>findViewWithTag("heartRate").setText("");
                 row.<TextView>findViewWithTag("diastolic").setText("");
                 row.<TextView>findViewWithTag("systolic").setText("");
                 row.requestFocus();
             });
-            return row;
         }
     }
+
     public static class ModifyRow extends EditRow {
-
-        private static int head = -1;
-        public static int nextIndex() {
-            return ++ModifyRow.head;
-        }
-        public static void resetIndex() {
-            ModifyRow.head = -1;
-        }
-        private LocalObject<Series> series;
-        private int entryIndex;
-        public ModifyRow(
-                Fragment context,
-                int templateId,
-                LocalObject<Series> series,
-                int entryIndex,
-                ZonedDateTime dateTime,
-                double heartRate,
-                double diastolic,
-                double systolic,
-                DatePicker datePicker, TimePicker timePicker
-        ){
-            super(context, templateId, dateTime, heartRate, diastolic, systolic, datePicker, timePicker);
-            this.series = series;
-            this.entryIndex = entryIndex;
-        }
-
-        @Override
-        public ViewGroup make() {
-            ViewGroup row = super.make();
-            row.<ToggleButton>findViewWithTag("submit").setOnCheckedChangeListener((btn, checked) -> {
-                if (checked) {
-                    Util.set_enabled(row, true);
-                    View nextView = row.findViewWithTag("systolic");
-                    nextView.requestFocus();
-                } else {
-                    Util.set_enabled(row, false);
-                    Series series = this.series.get().orElse(new Series(new ArrayList<>()));
-                    series.set(this.entryIndex, this.submit(row));
-                    this.series.put(series);
-                    btn.setEnabled(true);
-                    row.requestFocus();
-                }
-            });
+        public static ViewGroup make(Activity context, int layoutId, DatePicker datePicker, TimePicker timePicker) {
+            ViewGroup row = EditRow.make(context, layoutId, datePicker, timePicker);
             View confirmRemove = row.findViewWithTag("confirmRemove");
-            confirmRemove.setOnClickListener(btn -> {
-                Series series = this.series.get().orElse(new Series(new ArrayList<>()));
-                series.remove(this.entryIndex);
-                this.series.put(series);
-            });
             row.<ToggleButton>findViewWithTag("remove").setOnCheckedChangeListener((btn, checked) -> {
                 if (checked) {
                     confirmRemove.setVisibility(View.VISIBLE);
@@ -335,6 +295,45 @@ public abstract class EditRow extends DataRow{
                 }
             });
             return row;
+        }
+        private Series series;
+        private int entryIndex;
+        public ModifyRow(
+                Series series,
+                int entryIndex,
+                ZonedDateTime dateTime,
+                double heartRate,
+                double diastolic,
+                double systolic,
+                DatePicker datePicker, TimePicker timePicker
+        ){
+            super(dateTime, heartRate, diastolic, systolic, datePicker, timePicker);
+            this.series = series;
+            this.entryIndex = entryIndex;
+        }
+
+
+        @Override
+        public void populate(ViewGroup row) {
+            super.populate(row);
+            row.<ToggleButton>findViewWithTag("submit").setOnCheckedChangeListener((btn, checked) -> {
+                if (checked) {
+                    Util.set_enabled(row, true);
+                    View nextView = row.findViewWithTag("systolic");
+                    nextView.requestFocus();
+                } else {
+                    Util.set_enabled(row, false);
+                    series.set(this.entryIndex, this.submit(row));
+                    btn.setEnabled(true);
+                    row.requestFocus();
+                }
+            });
+            View confirmRemove = row.findViewWithTag("confirmRemove");
+            confirmRemove.setOnClickListener(btn -> {
+                series.remove(this.entryIndex);
+                row.<ToggleButton>findViewWithTag("remove").setChecked(false);
+            });
+
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.heartBuddy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import com.google.android.material.navigation.NavigationView;
@@ -21,12 +22,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//        intent.addCategory(Intent.CATEGORY_OPENABLE);
+//        intent.setType("*/*"); // To select any file type
+//        startActivityForResult(intent, 0);
         GlobalState.init(this);
         Util.init(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.appBarMain.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;

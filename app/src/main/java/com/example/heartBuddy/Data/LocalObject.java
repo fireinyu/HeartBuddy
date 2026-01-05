@@ -12,18 +12,19 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 public class LocalObject <T extends Serializable> {
 
     Path path;
-    private List<Consumer<LocalObject<T>>> onChangeHooks;
+    private ConcurrentLinkedQueue<Consumer<LocalObject<T>>> onChangeHooks;
     public LocalObject (Path root, String... tags) {
         for (String tag : tags) {
             root = root.resolve(tag);
         }
         this.path = root;
-        this.onChangeHooks = new ArrayList<>();
+        this.onChangeHooks = new ConcurrentLinkedQueue<>();
     }
 
     private void stage() {

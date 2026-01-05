@@ -1,23 +1,23 @@
 package com.example.heartBuddy.ui.export;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.heartBuddy.Data.EditRow;
 import com.example.heartBuddy.Data.Series;
 import com.example.heartBuddy.GlobalState;
 import com.example.heartBuddy.R;
-import com.example.heartBuddy.Util;
 import com.example.heartBuddy.databinding.FragmentExportBinding;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -67,6 +67,8 @@ public class ExportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE, Uri.parse("package:$packageName"));
+//        intent.setType("*/*"); // Filter for specific file types
         this.submit.setOnClickListener(btn -> this.exportSeries(this.destEntry.getText().toString()));
         this.importValidate.setText("");
         this.importButton.setOnClickListener(btn -> {
@@ -90,7 +92,7 @@ public class ExportFragment extends Fragment {
     }
 
     private void exportSeries(String destName) {
-        File dest = GlobalState.downloadsRoot.resolve(destName+".csv").toFile();
+        File dest = GlobalState.exportRoot.resolve(destName+".csv").toFile();
         CSVWriter writer;
         try {
             if (!dest.exists()) {
@@ -110,7 +112,7 @@ public class ExportFragment extends Fragment {
     }
 
     private void importSeries(String srcName) {
-        File src = GlobalState.downloadsRoot.resolve(srcName+".csv").toFile();
+        File src = GlobalState.exportRoot.resolve(srcName+".csv").toFile();
         CSVReader reader;
         try {
             reader = new CSVReader(new FileReader(src));

@@ -1,12 +1,12 @@
 package com.example.heartBuddy.ui.home;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
@@ -14,8 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.heartBuddy.Data.DataRow;
+import com.example.heartBuddy.Data.Datapoint;
 import com.example.heartBuddy.Data.EditRow;
 import com.example.heartBuddy.Data.LocalObject;
 import com.example.heartBuddy.Data.Plotter;
@@ -34,15 +37,15 @@ import java.util.function.Consumer;
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private View root;
+    private Series series;
     private ViewGroup addRowContainer;
     private LineChart hrChart;
     private LineChart bpChart;
-    private LinearLayout peekList;
+    private RecyclerView peekList;
     private Plotter plotter;
     private DatePicker datePicker;
     private TimePicker timePicker;
-    private EditRow.NewRow addRow;
-    private List<Consumer<LocalObject<Series>>> seriesHooks =  new ArrayList<>();
+    private ViewGroup addRow;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +60,6 @@ public class HomeFragment extends Fragment {
         this.addRowContainer = this.root.findViewById(R.id.addRowContainer);
         this.hrChart = this.root.findViewById(R.id.hrChart);
         this.bpChart = this.root.findViewById(R.id.bpChart);
-        this.peekList = this.root.findViewById(R.id.peekList);
         this.plotter = new TwoLineChart(
                 this.hrChart, this.bpChart,
                 getString(R.string.hr_chart_title), getString(R.string.bp_chart_title),
@@ -69,24 +71,18 @@ public class HomeFragment extends Fragment {
         );
         this.datePicker = this.root.findViewById(R.id.homeDatePicker);
         this.timePicker = this.root.findViewById(R.id.homeTimePicker);
-        this.addRow = new EditRow.NewRow(
-                this,
-                R.layout.row_add,
-                GlobalState.series,
-                this.datePicker,
-                this.timePicker
-        );
         Util.for_each(root, v -> v.setClickable(true));
         Util.for_each(root, v -> v.setFocusableInTouchMode(true));
         Util.for_each(datePicker, v -> v.setFocusable(false));
         Util.for_each(timePicker, v -> v.setFocusable(false));
         Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
-        View v = this.addRow.make();
-        this.addRowContainer.addView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        addRow = EditRow.NewRow.make(getActivity(), R.layout.row_add, datePicker, timePicker);
+        addRowContainer.addView(addRow);
+
         // why the other branch layoutparams are used when any branch runs ??
         ConstraintLayout constraintLayout = (ConstraintLayout) root;
         ConstraintSet constraintSet = new ConstraintSet();
-        v.addOnLayoutChangeListener((vk, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+        addRow.addOnLayoutChangeListener((vk, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             boolean isImeVisible = root.getRootWindowInsets() != null && root.getRootWindowInsets().isVisible(WindowInsets.Type.ime());
 
             constraintSet.clone(constraintLayout);
@@ -104,40 +100,54 @@ public class HomeFragment extends Fragment {
             constraintSet.applyTo(constraintLayout);
         });
 
-        Consumer<LocalObject<Series>> hook = obj -> this.refresh();
-        GlobalState.series.addHook(hook);
-        this.seriesHooks.add(hook);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        this.refresh();
-    }
-    public void refresh() {
-        this.peekList.removeAllViews();
-        Series series = GlobalState.series.get().orElse(new Series(new ArrayList<>()));
-        LinearLayout.LayoutParams formParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150);
-        series.extract(dp -> new DataRow(
-                        this,
-                        R.layout.row_peek,
+        this.series = GlobalState.series.get().orElse(new Series(List.of()));
+        plotter.unplot();
+        plotter.plot(series);
+        this.series.setOnSizeChangeHook(() -> {
+            plotter.unplot();
+            plotter.plot(series);
+            this.peekList.getAdapter().notifyDataSetChanged();
+        });
+        new EditRow.NewRow(
+                this.series,
+                this.datePicker,
+                this.timePicker
+        ).populate(addRow);
+        this.peekList = root.findViewById(R.id.peekList);
+        this.peekList.setLayoutManager(new LinearLayoutManager(getContext()));
+        this.peekList.setAdapter(new RecyclerView.Adapter() {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new Util.BasicViewHolder(DataRow.make(getActivity(), R.layout.row_peek), 200);
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+                Datapoint dp = series.get(series.size() -1 - position);
+                new DataRow(
                         dp.getDateTime(),
                         dp.getHeartRate(),
                         dp.getDiastolic(),
                         dp.getSystolic()
-                )).stream()
-                .map(row -> row.make())
-                .peek(row -> row.setLayoutParams(formParams))
-                .forEach(row -> this.peekList.addView(row,0));
-        this.plotter.unplot();
-        this.plotter.plot(series);
-        this.addRow.resetDateTime();
+                ).populate((ViewGroup) holder.itemView);
+            }
+
+            @Override
+            public int getItemCount() {
+                return series.size();
+            }
+        });
     }
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-        this.seriesHooks.forEach(hook -> GlobalState.series.removeHook(hook));
-        this.seriesHooks.clear();
+    public void onStop() {
+        GlobalState.series.put(this.series);
+        super.onStop();
     }
 }

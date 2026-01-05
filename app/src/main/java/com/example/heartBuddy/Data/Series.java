@@ -2,6 +2,8 @@ package com.example.heartBuddy.Data;
 
 import android.util.Pair;
 
+import com.example.heartBuddy.R;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class Series implements Serializable {
     }
     private ArrayList<Datapoint> data;
 
+    private transient Runnable onSizeChangeHook = () -> {};
+
     public Series (Datapoint[] datapoints) {
         this(Arrays.stream(datapoints).collect(Collectors.toList()));
     }
@@ -28,9 +32,18 @@ public class Series implements Serializable {
         this.data = new ArrayList<>(datapoints);
     }
 
+    public void setOnSizeChangeHook(Runnable onSizeChangeHook) {
+        this.onSizeChangeHook = onSizeChangeHook;
+    }
+
     public void add(Datapoint entry) {
         int index = Math.abs(Collections.binarySearch(this.data, entry, (dp1, dp2) -> dp1.getDateTime().compareTo(dp2.getDateTime())) + 1);
         this.data.add(index, entry);
+        onSizeChangeHook.run();
+    }
+
+    public Datapoint get(int index) {
+        return this.data.get(index);
     }
 
     public void set(int index, Datapoint entry) {
@@ -50,6 +63,7 @@ public class Series implements Serializable {
     }
     public void remove(int index) {
         this.data.remove(index);
+        onSizeChangeHook.run();
     }
 
 

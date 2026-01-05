@@ -7,10 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.heartBuddy.Data.DataRow;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -73,5 +80,18 @@ public class Util {
         return main.map(
                 item -> combiner.apply(item, secondIter.next())
         );
+    }
+
+    public static class BasicViewHolder extends RecyclerView.ViewHolder {
+        public BasicViewHolder(Activity context, int layoutId, int height) {
+            super(context.getLayoutInflater().inflate(layoutId, null));
+            super.itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
+        }
+
+        public BasicViewHolder(ViewGroup form, int height) {
+            super(form);
+            super.itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
+        }
+
     }
 }
