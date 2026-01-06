@@ -1,9 +1,10 @@
 package com.example.heartBuddy.ui.export;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.heartBuddy.Data.Series;
 import com.example.heartBuddy.GlobalState;
@@ -23,11 +25,14 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 /**
@@ -41,20 +46,37 @@ public class ExportFragment extends Fragment {
     private FragmentExportBinding binding;
     private View root;
     // TODO: Rename and change types of parameters
-    private EditText destEntry;
+    private Button chooseFile;
+    private TextView dest;
     private Button submit;
     private Button importButton;
     private ViewGroup importDialog;
     private Button importConfirm;
     private Button importCancel;
     private EditText importValidate;
+    private ActivityResultLauncher<String[]> mGetContent;
+    private Uri selectedUri;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentExportBinding.inflate(inflater, container, false);
         this.root = binding.getRoot();
-        this.destEntry = root.findViewById(R.id.exportDestEntry);
+        mGetContent = registerForActivityResult(new ActivityResultContracts.OpenDocument(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri uri) {
+                        if (uri != null) {
+                            selectedUri = uri;
+                            dest.setText(new File(uri.getPath()).getName());
+                            importButton.setEnabled(true);
+//                            getContext().getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        }
+                    }
+                });
+        this.chooseFile = root.findViewById(R.id.chooseFile);
+        this.dest = root.findViewById(R.id.exportDestEntry);
         this.submit = root.findViewById(R.id.exportSubmit);
         this.importButton = root.findViewById(R.id.exportImport);
         this.importDialog = root.findViewById(R.id.importDialog);
@@ -67,9 +89,11 @@ public class ExportFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE, Uri.parse("package:$packageName"));
-//        intent.setType("*/*"); // Filter for specific file types
-        this.submit.setOnClickListener(btn -> this.exportSeries(this.destEntry.getText().toString()));
+        this.chooseFile.setOnClickListener(btn -> {
+
+            mGetContent.launch(new String[]{"text/comma-separated-values"});
+        });
+        this.submit.setOnClickListener(btn -> this.exportSeries(this.selectedUri));
         this.importValidate.setText("");
         this.importButton.setOnClickListener(btn -> {
             this.importDialog.setVisibility(View.VISIBLE);
@@ -82,7 +106,7 @@ public class ExportFragment extends Fragment {
         });
         this.importConfirm.setOnClickListener(btn -> {
             if (importValidate.getText().toString().equals(GlobalState.importValidateKey)) {
-                this.importSeries(this.destEntry.getText().toString());
+                this.importSeries(this.selectedUri);
             }
             importValidate.setText("");
             this.importDialog.setVisibility(View.GONE);
@@ -91,14 +115,14 @@ public class ExportFragment extends Fragment {
 
     }
 
-    private void exportSeries(String destName) {
-        File dest = GlobalState.exportRoot.resolve(destName+".csv").toFile();
+    private void exportSeries(Uri uri) {
         CSVWriter writer;
         try {
-            if (!dest.exists()) {
-                dest.createNewFile();
+            if (uri == null) {
+                writer = new CSVWriter(new FileWriter(GlobalState.exportRoot.resolve(dest.getText().toString()+".csv").toFile()));
+            } else {
+                writer = new CSVWriter(new OutputStreamWriter(getContext().getContentResolver().openOutputStream(uri,"wt")));
             }
-             writer = new CSVWriter(new FileWriter(dest));
             writer.writeAll(
                     GlobalState.series.get().orElse(new Series(List.of())).export()
             );
@@ -111,11 +135,10 @@ public class ExportFragment extends Fragment {
 
     }
 
-    private void importSeries(String srcName) {
-        File src = GlobalState.exportRoot.resolve(srcName+".csv").toFile();
+    private void importSeries(Uri uri) {
         CSVReader reader;
         try {
-            reader = new CSVReader(new FileReader(src));
+            reader = new CSVReader(new InputStreamReader(getContext().getContentResolver().openInputStream(uri)));
             GlobalState.series.put(Series.from(reader.readAll()));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

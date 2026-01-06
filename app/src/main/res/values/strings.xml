@@ -24,8 +24,8 @@
     <string name="remove_label">Remove</string>
     <string name="remove_confirm">Confirm remove</string>
     <string name="remove_cancel">Cancel remove</string>
-    <string name="file_dest_label">File name:</string>
-    <string name="default_dest" translatable="false">heart_buddy_data</string>
+    <string name="file_pick_label">Choose file:</string>
+    <string name="default_dest" translatable="false">heartbuddy_data</string>
     <string name="export_label">Export</string>
     <string name="import_label">Import</string>
     <string name="import_verify">IMPORT</string>

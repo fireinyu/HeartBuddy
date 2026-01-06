@@ -76,6 +76,7 @@
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="3sp"
         android:autoSizeTextType="uniform"
+        android:enabled="false"
         android:lines="1"
         android:text="@string/import_label"
         app:layout_constraintBottom_toTopOf="@+id/guideline25"
@@ -83,14 +84,14 @@
         app:layout_constraintStart_toStartOf="@+id/guideline24"
         app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
-    <TextView
-        android:id="@+id/textView10"
+    <Button
+        android:id="@+id/chooseFile"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:autoSizeTextType="uniform"
         android:gravity="right|center_vertical"
         android:lines="1"
-        android:text="@string/file_dest_label"
+        android:text="@string/file_pick_label"
         app:layout_constraintBottom_toTopOf="@+id/guideline23"
         app:layout_constraintEnd_toStartOf="@+id/guideline26"
         app:layout_constraintStart_toStartOf="parent"

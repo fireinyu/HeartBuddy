@@ -1,10 +1,18 @@
 package com.example.heartBuddy;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -14,18 +22,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.heartBuddy.databinding.ActivityMainBinding;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("*/*"); // To select any file type
-//        startActivityForResult(intent, 0);
         GlobalState.init(this);
         Util.init(this);
 

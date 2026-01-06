@@ -1,5 +1,7 @@
 package com.example.heartBuddy.Data;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -10,6 +12,7 @@ import java.util.stream.Stream;
 public class Datapoint implements Serializable {
 
     public static Datapoint from(String[] data) {
+        Log.d("debug_import",data[0]);
         return new Datapoint(
                 ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.valueOf(data[0])), ZoneId.systemDefault()),
                 Double.valueOf(data[3]),
@@ -47,6 +50,7 @@ public class Datapoint implements Serializable {
     }
 
     public String[] export() {
+        Log.d("debug_export","" + dateTime + " " + systolic + diastolic + heartRate);
         return Stream.of(dateTime, systolic, diastolic, heartRate)
                 .map(val -> String.valueOf(val))
                 .collect(Collectors.toList())

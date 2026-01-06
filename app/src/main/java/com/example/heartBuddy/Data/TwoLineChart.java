@@ -68,6 +68,8 @@ public class TwoLineChart extends Plotter {
                 .collect(Collectors.toList());
         LineDataSet dataSet = new LineDataSet(entries, null);
         dataSet.setDrawValues(false);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setDrawCircles(false);
         dataSet.setColor(this.hrColor);
 //        dataSet.setDrawCircles(false);
 //        dataSet.setDrawCircleHole(false);
@@ -82,6 +84,8 @@ public class TwoLineChart extends Plotter {
                 .collect(Collectors.toList());
         LineDataSet dataSet = new LineDataSet(entries, this.diastolicLabel);
         dataSet.setDrawValues(false);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setDrawCircles(false);
         dataSet.setColor(this.diastolicColor);
 //        dataSet.setDrawCircles(false);
 //        dataSet.setDrawCircleHole(false);
@@ -95,6 +99,8 @@ public class TwoLineChart extends Plotter {
                 .map(pair -> new Entry(pair.first.toEpochSecond(), pair.second.floatValue()))
                 .collect(Collectors.toList());
         LineDataSet dataSet = new LineDataSet(entries, this.systolicLabel);
+        dataSet.setDrawCircleHole(false);
+        dataSet.setDrawCircles(false);
         dataSet.setDrawValues(false);
         dataSet.setColor(this.systolicColor);
 //        dataSet.setDrawCircles(false);
