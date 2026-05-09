@@ -150,11 +150,11 @@ public abstract class EditRow extends DataRow{
         dateBtn.setOnCheckedChangeListener((btn, checked) -> {
             row.requestFocus();
             if (checked) {
+                datePicker.post(() -> datePicker.setVisibility(View.VISIBLE));
                 Util.set_enabled(row, false);
                 Util.set_enabled(btn, true);
                 Util.set_enabled(timeBtn, true);
                 timeBtn.setChecked(false);
-                datePicker.setVisibility(View.VISIBLE);
             } else {
                 datePicker.setVisibility(View.GONE);
                 ((ToggleButton)btn).setTextOff(Util.format_date(LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth())));
@@ -169,11 +169,11 @@ public abstract class EditRow extends DataRow{
         timeBtn.setOnCheckedChangeListener((btn, checked) -> {
             row.requestFocus();
             if (checked) {
+                timePicker.post(() -> timePicker.setVisibility(View.VISIBLE));
                 Util.set_enabled(row, false);
                 Util.set_enabled(btn, true);
                 Util.set_enabled(dateBtn, true);
                 dateBtn.setChecked(false);
-                timePicker.setVisibility(View.VISIBLE);
             } else {
                 timePicker.setVisibility(View.GONE);
                 ((ToggleButton)btn).setTextOff(Util.format_time(LocalTime.of(timePicker.getHour(), timePicker.getMinute())));
