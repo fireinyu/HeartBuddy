@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.heartBuddy.Data.DataRow;
 import com.example.heartBuddy.Data.Datapoint;
 import com.example.heartBuddy.Data.EditRow;
 import com.example.heartBuddy.Data.LocalObject;
@@ -67,7 +68,7 @@ public class ListFragment extends Fragment {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-               RecyclerView.ViewHolder holder = new Util.BasicViewHolder(EditRow.ModifyRow.make(getActivity(), R.layout.row_modify, datePicker, timePicker), 300);
+               RecyclerView.ViewHolder holder = new Util.BasicViewHolder(EditRow.make(getActivity(), R.layout.row_modify), 300);
                return holder;
             }
 

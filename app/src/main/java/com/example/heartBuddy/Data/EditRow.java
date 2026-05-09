@@ -27,45 +27,12 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 public abstract class EditRow extends DataRow{
-
-    public static ViewGroup make(Activity context, int layoutId, DatePicker datePicker, TimePicker timePicker) {
+    public static ViewGroup make(Activity context, int layoutId) {
         ViewGroup row = DataRow.make(context, layoutId);
         ToggleButton dateBtn = row.findViewWithTag("date");
         ToggleButton timeBtn = row.findViewWithTag("time");
-        dateBtn.setTextOff(dateBtn.getText());
-        dateBtn.setOnCheckedChangeListener((btn, checked) -> {
-            row.requestFocus();
-            if (checked) {
-                Util.set_enabled(row, false);
-                Util.set_enabled(btn, true);
-                Util.set_enabled(timeBtn, true);
-                timeBtn.setChecked(false);
-                datePicker.setVisibility(View.VISIBLE);
-            } else {
-                datePicker.setVisibility(View.GONE);
-                ((ToggleButton)btn).setTextOff(Util.format_date(LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth())));
-                Util.set_enabled(row, true);
-                refreshSubmitButton(row);
-                ToggleButton nextView = row.findViewWithTag("time");
-                nextView.setChecked(true);
-            }
-        });
-        timeBtn.setTextOff(timeBtn.getText());
-        timeBtn.setOnCheckedChangeListener((btn, checked) -> {
-            row.requestFocus();
-            if (checked) {
-                Util.set_enabled(row, false);
-                Util.set_enabled(btn, true);
-                Util.set_enabled(dateBtn, true);
-                dateBtn.setChecked(false);
-                timePicker.setVisibility(View.VISIBLE);
-            } else {
-                timePicker.setVisibility(View.GONE);
-                ((ToggleButton)btn).setTextOff(Util.format_time(LocalTime.of(timePicker.getHour(), timePicker.getMinute())));
-                Util.set_enabled(row, true);
-                refreshSubmitButton(row);
-            }
-        });
+        dateBtn.setChecked(false);
+        timeBtn.setChecked(false);
         Iterator<TextView.OnEditorActionListener> doneListeners = Stream.<TextView.OnEditorActionListener>of(
                 (v, i, e) -> {
                     View nextView = row.findViewWithTag("diastolic");
@@ -157,6 +124,7 @@ public abstract class EditRow extends DataRow{
         row.post(() -> refreshTextSize(row));
         return row;
     }
+
     private DatePicker datePicker;
 
     private TimePicker timePicker;
@@ -176,6 +144,45 @@ public abstract class EditRow extends DataRow{
     public void populate(ViewGroup row) {
         super.populate(row);
         this.resetDateTime(row);
+        ToggleButton dateBtn = row.findViewWithTag("date");
+        ToggleButton timeBtn = row.findViewWithTag("time");
+        dateBtn.setTextOff(dateBtn.getText());
+        dateBtn.setOnCheckedChangeListener((btn, checked) -> {
+            row.requestFocus();
+            if (checked) {
+                Util.set_enabled(row, false);
+                Util.set_enabled(btn, true);
+                Util.set_enabled(timeBtn, true);
+                timeBtn.setChecked(false);
+                datePicker.setVisibility(View.VISIBLE);
+            } else {
+                datePicker.setVisibility(View.GONE);
+                ((ToggleButton)btn).setTextOff(Util.format_date(LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth())));
+                super.date = LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth());
+                Util.set_enabled(row, true);
+                refreshSubmitButton(row);
+                ToggleButton nextView = row.findViewWithTag("time");
+                nextView.setChecked(true);
+            }
+        });
+        timeBtn.setTextOff(timeBtn.getText());
+        timeBtn.setOnCheckedChangeListener((btn, checked) -> {
+            row.requestFocus();
+            if (checked) {
+                Util.set_enabled(row, false);
+                Util.set_enabled(btn, true);
+                Util.set_enabled(dateBtn, true);
+                dateBtn.setChecked(false);
+                timePicker.setVisibility(View.VISIBLE);
+            } else {
+                timePicker.setVisibility(View.GONE);
+                ((ToggleButton)btn).setTextOff(Util.format_time(LocalTime.of(timePicker.getHour(), timePicker.getMinute())));
+                super.time = LocalTime.of(timePicker.getHour(), timePicker.getMinute());
+                Util.set_enabled(row, true);
+                refreshSubmitButton(row);
+            }
+        });
+
     }
 
     public void resetDateTime(ViewGroup row) {
@@ -189,8 +196,8 @@ public abstract class EditRow extends DataRow{
     Datapoint submit(ViewGroup row) {
         return new Datapoint(
                 ZonedDateTime.of(
-                        LocalDate.of(datePicker.getYear(), datePicker.getMonth()+1, datePicker.getDayOfMonth()),
-                        LocalTime.of(timePicker.getHour(), timePicker.getMinute()),
+                        date,
+                        time,
                         ZoneId.systemDefault()
                 ),
                 Double.parseDouble(row.<TextView>findViewWithTag("heartRate").getText().toString()),
@@ -248,11 +255,6 @@ public abstract class EditRow extends DataRow{
     }
 
     public static class NewRow extends EditRow{
-
-        public static ViewGroup make(Activity context, int layoutId, DatePicker datePicker, TimePicker timePicker) {
-            ViewGroup row = EditRow.make(context, layoutId, datePicker, timePicker);
-            return row;
-        }
         private Series series;
 
         public NewRow(
@@ -267,7 +269,6 @@ public abstract class EditRow extends DataRow{
         @Override
         public void populate(ViewGroup row) {
             super.populate(row);
-            this.resetDateTime(row);
             row.<TextView>findViewWithTag("heartRate").setText("");
             row.<TextView>findViewWithTag("diastolic").setText("");
             row.<TextView>findViewWithTag("systolic").setText("");
@@ -282,20 +283,6 @@ public abstract class EditRow extends DataRow{
     }
 
     public static class ModifyRow extends EditRow {
-        public static ViewGroup make(Activity context, int layoutId, DatePicker datePicker, TimePicker timePicker) {
-            ViewGroup row = EditRow.make(context, layoutId, datePicker, timePicker);
-            View confirmRemove = row.findViewWithTag("confirmRemove");
-            row.<ToggleButton>findViewWithTag("remove").setOnCheckedChangeListener((btn, checked) -> {
-                if (checked) {
-                    confirmRemove.setVisibility(View.VISIBLE);
-                    confirmRemove.setEnabled(true);
-                } else {
-                    confirmRemove.setVisibility(View.GONE);
-                    confirmRemove.setEnabled(false);
-                }
-            });
-            return row;
-        }
         private Series series;
         private int entryIndex;
         public ModifyRow(
@@ -311,8 +298,6 @@ public abstract class EditRow extends DataRow{
             this.series = series;
             this.entryIndex = entryIndex;
         }
-
-
         @Override
         public void populate(ViewGroup row) {
             super.populate(row);
@@ -329,6 +314,15 @@ public abstract class EditRow extends DataRow{
                 }
             });
             View confirmRemove = row.findViewWithTag("confirmRemove");
+            row.<ToggleButton>findViewWithTag("remove").setOnCheckedChangeListener((btn, checked) -> {
+                if (checked) {
+                    confirmRemove.setVisibility(View.VISIBLE);
+                    confirmRemove.setEnabled(true);
+                } else {
+                    confirmRemove.setVisibility(View.GONE);
+                    confirmRemove.setEnabled(false);
+                }
+            });
             confirmRemove.setOnClickListener(btn -> {
                 series.remove(this.entryIndex);
                 row.<ToggleButton>findViewWithTag("remove").setChecked(false);

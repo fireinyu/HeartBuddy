@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
         Util.for_each(datePicker, v -> v.setFocusable(false));
         Util.for_each(timePicker, v -> v.setFocusable(false));
         Util.for_each(root, v -> v.setOnFocusChangeListener(Util::toggleKeyboard));
-        addRow = EditRow.NewRow.make(getActivity(), R.layout.row_add, datePicker, timePicker);
+        addRow = EditRow.make(getActivity(), R.layout.row_add);
         addRowContainer.addView(addRow);
 
         // why the other branch layoutparams are used when any branch runs ??

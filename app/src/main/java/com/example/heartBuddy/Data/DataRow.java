@@ -22,9 +22,9 @@ public class DataRow {
     }
     LocalDate date;
     LocalTime time;
-    private double heartRate;
-    private double diastolic;
-    private double systolic;
+    double heartRate;
+    double diastolic;
+    double systolic;
 
     public DataRow(
             ZonedDateTime dateTime,
